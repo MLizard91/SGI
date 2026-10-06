@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "SGI Mexticacán",
+    "slug": "sgi-mexticacan",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "mx.gob.mexticacan.sgi"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1E3A8A",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "mx.gob.mexticacan.sgi"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "scheme": "sgimexticacan",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "SGI usa tu ubicación para registrar dónde está la incidencia que reportas."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "SGI usa la cámara para tomar fotografías de la incidencia.",
+          "photosPermission": "SGI accede a tus fotos para adjuntarlas al reporte.",
+          "microphonePermission": false
+        }
+      ]
+    ]
+  }
+}
