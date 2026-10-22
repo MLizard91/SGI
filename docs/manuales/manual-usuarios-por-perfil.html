@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual de usuarios por perfil | SGI Mexticacán</title>
+  <style>
+    :root {
+      --guinda: #7b1f3a;
+      --guinda-oscuro: #541329;
+      --beige: #f4ead7;
+      --tinta: #292522;
+      --gris: #6b625b;
+      --borde: #dfd6c9;
+      --fondo: #fbf9f5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--tinta);
+      background: #e9e4dc;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.48;
+    }
+    .pagina {
+      position: relative;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 12mm auto;
+      padding: 18mm 18mm 20mm;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 2mm 8mm #0002;
+      page-break-after: always;
+    }
+    .pagina:last-child { page-break-after: auto; }
+    h1, h2, h3 { color: var(--guinda-oscuro); line-height: 1.2; }
+    h1 { margin: 0 0 5mm; font-size: 27pt; }
+    h2 { margin: 0 0 4mm; font-size: 21pt; }
+    h3 { margin: 5mm 0 2mm; font-size: 13pt; }
+    p { margin: 2mm 0 3mm; }
+    ul, ol { margin: 2mm 0 4mm; padding-left: 7mm; }
+    li { margin: 1.5mm 0; }
+    .barra { height: 3mm; margin: -18mm -18mm 12mm; background: var(--guinda); }
+    .pie {
+      position: absolute;
+      right: 18mm;
+      bottom: 8mm;
+      left: 18mm;
+      padding-top: 2mm;
+      border-top: .3mm solid var(--borde);
+      color: var(--gris);
+      font-size: 8pt;
+      display: flex;
+      justify-content: space-between;
+    }
+    .portada {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(155deg, #fff 0 56%, var(--beige) 56% 100%);
+    }
+    .portada .marca { width: 55mm; height: auto; margin: 10mm 0 24mm; }
+    .portada h1 { max-width: 150mm; font-size: 34pt; }
+    .portada .sub { color: var(--gris); font-size: 16pt; }
+    .portada .version {
+      margin-top: 10mm;
+      color: var(--guinda);
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: .4pt;
+    }
+    .nota, .paso {
+      margin: 4mm 0;
+      padding: 4mm 5mm;
+      border-left: 1.2mm solid var(--guinda);
+      border-radius: 1.5mm;
+      background: var(--fondo);
+    }
+    .nota strong { color: var(--guinda-oscuro); }
+    .rol {
+      display: inline-block;
+      margin-bottom: 3mm;
+      padding: 1.5mm 3mm;
+      border-radius: 10mm;
+      background: var(--beige);
+      color: var(--guinda-oscuro);
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5pt;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 4mm 0; font-size: 9.2pt; }
+    th { background: var(--guinda); color: white; text-align: left; }
+    th, td { padding: 2.4mm 3mm; border: .3mm solid var(--borde); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--fondo); }
+    .captura {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 3mm auto 1mm;
+      border: .35mm solid var(--borde);
+      border-radius: 2mm;
+    }
+    figure { margin: 4mm 0; }
+    figcaption { margin-top: 1.5mm; color: var(--gris); font-size: 8.5pt; }
+    .pasos { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin: 5mm 0; }
+    .paso { margin: 0; min-height: 24mm; }
+    .paso b { display: block; margin-bottom: 1mm; color: var(--guinda); }
+    .acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 3mm 0; }
+    .acciones > div { padding: 3mm 4mm; border: .3mm solid var(--borde); border-radius: 2mm; }
+    .recorte {
+      position: relative;
+      height: 85mm;
+      overflow: hidden;
+      margin: 3mm 0 1mm;
+      border: .35mm solid var(--borde);
+      border-radius: 2mm;
+    }
+    .recorte img {
+      position: absolute;
+      top: -20mm;
+      left: -170mm;
+      width: 260mm;
+      max-width: none;
+    }
+    .pequeno { color: var(--gris); font-size: 9pt; }
+    .dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+    @page { size: A4; margin: 0; }
+    @media print {
+      body { background: white; }
+      .pagina { width: 210mm; height: 297mm; min-height: 297mm; margin: 0; box-shadow: none; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="pagina portada">
+    <div>
+      <img class="marca" src="../../mobile/assets/logo-mexticacan.png" alt="Logotipo Mexticacán Incidencias">
+      <div class="rol">Sistema de Gestión de Incidencias</div>
+      <h1>Manual de usuarios<br>por perfil</h1>
+      <p class="sub">Guía ilustrada para ciudadanía y personal municipal</p>
+      <p>H. Ayuntamiento de Mexticacán, Jalisco</p>
+      <p class="version">Edición · 15 de octubre de 2026</p>
+    </div>
+    <div>
+      <div class="nota"><strong>Propósito</strong><br>Aprender las funciones disponibles en SGI según el perfil de acceso, registrar reportes con información útil y dar seguimiento a su atención.</div>
+      <p class="pequeno">Las capturas corresponden a pantallas de prueba del panel web. Los datos visibles son demostrativos; no se incluyen credenciales de acceso.</p>
+    </div>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>15 octubre 2026</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Antes de comenzar</div>
+    <h2>Perfiles y acceso</h2>
+    <p>SGI aplica permisos de acuerdo con el rol y, cuando corresponde, con el área o la asignación de cada usuario. La ciudadanía usa la aplicación móvil; el personal municipal trabaja en el panel web.</p>
+    <table>
+      <thead><tr><th>Perfil</th><th>Acceso y funciones principales</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ciudadano</strong></td><td>Desde móvil, crea reportes y consulta únicamente sus propios folios, avances y comentarios.</td></tr>
+        <tr><td><strong>Administrador</strong></td><td>Consulta y gestiona reportes de todas las áreas. Administra cuentas, roles, áreas y estados de acceso.</td></tr>
+        <tr><td><strong>Recepcionista</strong></td><td>Consulta reportes de todas las áreas; puede asignar personal, ajustar prioridad y dar seguimiento.</td></tr>
+        <tr><td><strong>Encargado de Área</strong></td><td>Consulta y coordina los reportes de su área; puede asignar personal disponible de esa área.</td></tr>
+        <tr><td><strong>Operativo</strong></td><td>Consulta reportes asignados a su cuenta; registra avances, evidencias y comentarios.</td></tr>
+      </tbody>
+    </table>
+    <div class="nota"><strong>Protege tu cuenta.</strong> No compartas contraseña ni sesión. Si una función no aparece o se rechaza, confirma con el administrador tu rol, área y asignación; no intentes evadir permisos.</div>
+    <h3>Flujo general de una incidencia</h3>
+    <p>La ciudadanía registra el problema; el municipio lo revisa y asigna; el personal informa el avance y la resolución; quien reportó consulta el historial y puede añadir comentarios.</p>
+    <figure>
+      <img class="captura" src="../capturas/02-dashboard.png" alt="Panel web de resumen por áreas, estatus y reportes recientes">
+      <figcaption>Panel web: resumen general. Las cifras y folios de esta captura son datos demostrativos de una prueba.</figcaption>
+    </figure>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Perfiles</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 1 · Ciudadano</div>
+    <h2>Reporta y consulta desde el celular</h2>
+    <p>La aplicación permite reportar problemas de Alumbrado Público, Parques y Jardines, Aseo Público, Obras Públicas y Agua Potable. Regístrate con tu correo y conserva tu contraseña en privado.</p>
+    <h3>Crear una cuenta</h3>
+    <ol>
+      <li>Abre la aplicación oficial o Expo Go cuando el Ayuntamiento te proporcione un QR de pruebas.</li>
+      <li>Pulsa <strong>Regístrate</strong>. Nombre, correo y contraseña son obligatorios; la contraseña debe tener al menos 8 caracteres. Confírmala.</li>
+      <li>Si ya tienes cuenta, inicia sesión con el correo registrado. En un teléfono compartido, pulsa <strong>Salir</strong> al terminar.</li>
+    </ol>
+    <h3>Enviar un reporte</h3>
+    <div class="pasos">
+      <div class="paso"><b>1 · Selecciona</b>En Mis reportes, pulsa <strong>＋ Reportar</strong>. Elige el área y la categoría que describan el problema.</div>
+      <div class="paso"><b>2 · Describe</b>Escribe un título breve y explica qué sucede, desde cuándo y qué referencia ayuda a ubicarlo.</div>
+      <div class="paso"><b>3 · Documenta</b>Adjunta entre 1 y 5 fotografías desde cámara o galería. Evita datos personales que no sean necesarios.</div>
+      <div class="paso"><b>4 · Ubica</b>Permite el GPS, revisa el marcador en el mapa y ajústalo tocando el punto correcto. Completa dirección o comunidad si hace falta.</div>
+      <div class="paso"><b>5 · Envía</b>Revisa los datos y pulsa <strong>Enviar reporte</strong>. Guarda el folio de confirmación.</div>
+      <div class="paso"><b>6 · Da seguimiento</b>En Mis reportes, abre el folio para revisar estatus, historial y comentarios. Desliza hacia abajo para actualizar.</div>
+    </div>
+    <div class="nota"><strong>Capturas de la app ciudadana.</strong> En el material disponible para esta edición no hay capturas del flujo móvil de ciudadanía. No se presentan imágenes del panel municipal como si fueran pantallas de la app ciudadana.</div>
+    <h3>Estatus que puedes consultar</h3>
+    <p>Recibida → En revisión → Asignada → En proceso → Resuelta → Cerrada. También puede aparecer <strong>Rechazada</strong>; revisa los comentarios para conocer la información registrada.</p>
+    <p class="pequeno">Si el envío parece fallar, revisa primero Mis reportes para confirmar que no se haya generado un folio. Así evitas crear duplicados.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Ciudadanía</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfiles 2 y 3 · Administrador y Recepcionista</div>
+    <h2>Revisar la bandeja de incidencias</h2>
+    <p>Inicia sesión en el panel web con la cuenta institucional. El Dashboard resume la operación; abre <strong>Incidencias</strong> para localizar y revisar reportes.</p>
+    <figure>
+      <img class="captura" src="../capturas/03-incidencias.png" alt="Lista web de incidencias con buscador y filtros">
+      <figcaption>Lista de incidencias con búsqueda, filtros y paginación. El aviso de reportes nuevos permite actualizar la lista.</figcaption>
+    </figure>
+    <h3>Pasos para localizar un reporte</h3>
+    <ol>
+      <li>Busca por folio, título, dirección o comunidad.</li>
+      <li>Filtra por área, estatus, prioridad o fechas según lo que necesites revisar.</li>
+      <li>Pulsa el folio o título para abrir el detalle; confirma descripción, fotos y ubicación antes de tomar una acción.</li>
+      <li>Si aparece el aviso de reporte nuevo, púlsalo para recargar los resultados.</li>
+    </ol>
+    <figure>
+      <img class="captura" src="../capturas/04-aviso-tiempo-real.png" alt="Aviso de un reporte nuevo en la lista de incidencias">
+      <figcaption>Aviso de nuevo reporte recibido en el panel. La conexión debe estar activa para recibir actualizaciones en tiempo real.</figcaption>
+    </figure>
+    <div class="nota"><strong>Alcance:</strong> Administrador y Recepcionista pueden consultar todas las áreas. La administración de usuarios está reservada al Administrador.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Administrador · Recepcionista</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 2 · Administrador</div>
+    <h2>Administrar cuentas con cuidado</h2>
+    <p>La opción <strong>Usuarios</strong> aparece en el menú únicamente para Administrador. Utilízala para crear cuentas municipales y mantener sus permisos y estado.</p>
+    <figure>
+      <img class="captura" src="../capturas/07-usuarios-formulario.png" alt="Formulario web para crear un usuario">
+      <figcaption>Formulario de alta. Se recomienda asignar solo el rol y área necesarios para las funciones del puesto.</figcaption>
+    </figure>
+    <h3>Crear una cuenta de personal</h3>
+    <ol>
+      <li>Abre <strong>Usuarios</strong> y pulsa <strong>+ Nuevo usuario</strong>.</li>
+      <li>Captura nombre y correo institucional; agrega apellidos y teléfono cuando corresponda.</li>
+      <li>Selecciona el rol. Para <strong>Encargado de Área</strong> y <strong>Operativo</strong>, selecciona el área correspondiente.</li>
+      <li>Establece una contraseña inicial de al menos 8 caracteres y entrégala al titular mediante un canal seguro.</li>
+      <li>Pulsa <strong>Guardar</strong> y comprueba rol, área y estado en la lista.</li>
+    </ol>
+    <h3>Modificar o desactivar</h3>
+    <ul>
+      <li>Busca por nombre o correo y pulsa <strong>Editar</strong>. El correo no se puede cambiar desde el formulario.</li>
+      <li>Deja la contraseña vacía si no necesitas cambiarla. La contraseña nueva es opcional al editar.</li>
+      <li>Desmarca <strong>Cuenta activa</strong> para deshabilitar el acceso cuando ya no se necesite. No desactives tu propia cuenta.</li>
+      <li>Revisa periódicamente las cuentas activas, roles y áreas. No compartas cuentas ni guardes contraseñas en este manual.</li>
+    </ul>
+    <div class="nota"><strong>Buenas prácticas:</strong> utiliza cuentas personales, aplica el principio de menor privilegio y confirma cuidadosamente el correo antes de guardar.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Administrador</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfiles 2, 3 y 4 · Gestión municipal</div>
+    <h2>Asignar y dar seguimiento</h2>
+    <p>Administrador, Recepcionista y Encargado de Área pueden asignar personal y cambiar prioridad. El Encargado opera sobre su área. La disponibilidad exacta de acciones depende del rol y los permisos del reporte.</p>
+    <div class="recorte">
+      <img src="../capturas/05-detalle.png" alt="Vista parcial del panel de atención, sin los datos personales del reporte">
+    </div>
+    <figcaption>Recorte del panel de atención: estatus, nota, asignación, prioridad y carga de evidencias. Se omite la columna con datos personales de la captura.</figcaption>
+    <h3>Atender un caso</h3>
+    <ol>
+      <li>Abre el detalle desde la lista y valida el área, categoría, descripción, fotografías y punto del mapa.</li>
+      <li>Selecciona el nuevo estatus de acuerdo con la situación real y agrega una nota breve para la ciudadanía si es útil.</li>
+      <li>Para asignar, elige una persona disponible del área. Selecciona una prioridad acorde con la urgencia operativa.</li>
+      <li>Cuando haya evidencia del trabajo realizado, usa <strong>Subir evidencias</strong>. Se admiten hasta 5 imágenes por envío.</li>
+      <li>Escribe en Comentarios. Marca <strong>Comentario interno</strong> solo si la ciudadanía no debe ver el mensaje.</li>
+      <li>Verifica el historial y vuelve a cargar el detalle si el cambio no se refleja de inmediato.</li>
+    </ol>
+    <div class="nota"><strong>Privacidad:</strong> mantén los comentarios objetivos. Usa mensajes internos para coordinación interna; nunca registres contraseñas ni información personal innecesaria.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Administrador · Recepción · Encargado</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 4 · Encargado de Área</div>
+    <h2>Coordinar los reportes del área</h2>
+    <p>La cuenta de Encargado está limitada al área que le asignó el Administrador. Desde la lista revisa el trabajo pendiente y coordina la asignación con operativos del mismo ámbito.</p>
+    <figure>
+      <img class="captura" src="../capturas/06-mapa.png" alt="Mapa municipal con incidencias identificadas por color de área">
+      <figcaption>El mapa permite ubicar incidencias por área. Los puntos y folios mostrados corresponden a datos de demostración.</figcaption>
+    </figure>
+    <h3>Rutina recomendada</h3>
+    <ol>
+      <li>Revisa incidencias nuevas y casos abiertos del área.</li>
+      <li>Comprueba ubicación, categoría y prioridad; solicita aclaración en un comentario cuando falte información útil.</li>
+      <li>Asigna el reporte a un operativo disponible del área y comunica el avance con una nota clara.</li>
+      <li>Confirma que el personal registre evidencias y marque el estatus real del trabajo.</li>
+      <li>Revisa el mapa, el historial y la lista para detectar casos sin asignar o con seguimiento detenido.</li>
+    </ol>
+    <div class="nota"><strong>Si no aparecen reportes:</strong> limpia los filtros y confirma con el Administrador que el área asignada a tu usuario sea correcta.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Encargado de Área</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 5 · Operativo</div>
+    <h2>Atender los reportes asignados</h2>
+    <p>El Operativo ve únicamente las incidencias asignadas a su cuenta. El panel web es el medio de trabajo municipal. Si una asignación no aparece, solicita al Encargado o Administrador que revise la cuenta y el área.</p>
+    <div class="nota"><strong>La captura de atención es de un usuario administrador.</strong> Se utiliza únicamente para ilustrar el detalle de un reporte. Un Operativo no verá las opciones de administración, asignación o prioridad que no le correspondan.</div>
+    <div class="recorte">
+      <img src="../capturas/05-detalle.png" alt="Vista parcial del detalle de atención de una incidencia">
+    </div>
+    <figcaption>Ejemplo del panel de atención. El Operativo puede actualizar el estatus solo a <strong>En proceso</strong> o <strong>Resuelta</strong>, agregar evidencias y comentar.</figcaption>
+    <h3>Registrar el trabajo de campo</h3>
+    <ol>
+      <li>Abre el reporte que se te asignó. Lee descripción y comentarios antes de acudir.</li>
+      <li>Usa la ubicación y la dirección como referencia. Confirma en el lugar que se trata del problema descrito.</li>
+      <li>Selecciona <strong>En proceso</strong> al iniciar la atención.</li>
+      <li>Al terminar, adjunta evidencia fotográfica pertinente y registra una nota clara sobre el trabajo realizado.</li>
+      <li>Marca <strong>Resuelta</strong> cuando la atención corresponda a ese estado. Si sigue pendiente, deja el estatus correcto y explica el siguiente paso.</li>
+      <li>Revisa el historial y los comentarios para confirmar que la información quedó guardada.</li>
+    </ol>
+    <div class="nota"><strong>Importante:</strong> no marques un caso como resuelto antes de completar el trabajo. No publiques información confidencial en comentarios visibles para ciudadanía.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Operativo</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Acceso adaptable · Personal municipal</div>
+    <h2>Panel en pantalla de celular</h2>
+    <p>El panel web también puede mostrarse en una pantalla estrecha. Esta vista corresponde al <strong>panel municipal adaptable</strong>, no a la app móvil de ciudadanía. Para crear un reporte ciudadano se utiliza la aplicación ciudadana.</p>
+    <figure>
+      <img class="captura" src="../capturas/08-dashboard-celular.png" alt="Dashboard del panel municipal adaptado a una pantalla de celular">
+      <figcaption>Dashboard del panel municipal en formato celular: indicadores, áreas, estatus, mapa y reportes recientes.</figcaption>
+    </figure>
+    <figure>
+      <img class="captura" src="../capturas/09-incidencias-celular.png" alt="Lista de incidencias del panel municipal adaptada a celular">
+      <figcaption>Lista de incidencias del panel municipal en pantalla estrecha. Puede requerir desplazamiento para consultar todas las columnas.</figcaption>
+    </figure>
+    <div class="nota"><strong>Atención:</strong> no dejes abierta una sesión municipal en un teléfono compartido. Al terminar, pulsa <strong>Salir</strong> y bloquea el dispositivo.</div>
+    <h3>Ayuda y reporte de problemas</h3>
+    <p>Al pedir soporte, informa fecha y hora, perfil, pantalla, pasos para reproducir el problema, dispositivo/navegador y texto del error. Para incidencias, incluye el folio. No compartas contraseñas, tokens ni archivos `.env`.</p>
+    <p class="pequeno">Las capturas son ilustrativas y pueden no coincidir exactamente con la versión instalada. Los permisos se aplican según el perfil configurado en el servidor.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual por perfil</span><span>Soporte</span></div>
+  </section>
+</body>
+</html>

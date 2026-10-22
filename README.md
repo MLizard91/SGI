@@ -69,6 +69,12 @@ Todo está hecho en **JavaScript**: el mismo lenguaje en el servidor, la web y e
 
 ## Instalación paso a paso
 
+Para ver los comandos de inicio organizados en terminales de PowerShell, consulta la [guía para Windows](docs/GUIA-COMANDOS-WINDOWS.md).
+
+## Manuales y soporte
+
+Consulta el [índice de manuales](docs/manuales/README.md) para las guías de ciudadanía y personal municipal, instalación y configuración, administración del sistema, guías rápidas y solución de problemas.
+
 ### 1. Base de datos (SQL Server)
 
 1. Abre SSMS y conéctate a tu servidor.
@@ -128,6 +134,19 @@ npx expo start
 4. Regístrate como ciudadano y envía tu primer reporte. Verás cómo aparece **al instante** en el panel web.
 
 > Si el celular no conecta: revisa que el Firewall de Windows permita el puerto **4000** y que ambos dispositivos estén en la misma red.
+
+---
+
+## Pruebas de integración
+
+Con SQL Server inicializado y las variables de conexión configuradas en `backend/.env`, ejecuta:
+
+```bash
+cd backend
+npm test
+```
+
+La suite crea usuarios e incidencias temporales con un identificador único, recorre las cinco áreas y sus 20 categorías, y elimina esos datos al finalizar. No la ejecutes contra una base de producción. Los resultados locales se guardan en `backend/tests/resultados/usuarios-prueba.json` (cuentas usadas, áreas/categorías y tiempos); las cuentas quedan eliminadas y el archivo no contiene contraseñas.
 
 ---
 

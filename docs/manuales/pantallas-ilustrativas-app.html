@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Vistas ilustrativas de la app ciudadana SGI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      width: 430px;
+      height: 900px;
+      margin: 0;
+      padding: 18px 20px;
+      overflow: hidden;
+      background: #efe9de;
+      color: #302820;
+      font: 15px/1.35 "Segoe UI", Arial, sans-serif;
+    }
+    .telefono {
+      height: 864px;
+      overflow: hidden;
+      border: 1px solid #d9cdbc;
+      border-radius: 25px;
+      background: #faf7f1;
+      box-shadow: 0 8px 25px #40201826;
+    }
+    .barra { height: 28px; background: #64152f; }
+    .appbar {
+      display: flex;
+      min-height: 58px;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 15px;
+      background: #7b1f3a;
+      color: white;
+      font-weight: 700;
+    }
+    .appbar small { display: block; color: #f5e8d8; font-size: 11px; font-weight: 400; }
+    .logo { width: 39px; height: 39px; object-fit: contain; border-radius: 7px; background: #f4ead7; }
+    .contenido { padding: 16px; }
+    h1 { margin: 0 0 4px; color: #64152f; font-size: 21px; }
+    h2 { margin: 0 0 12px; color: #64152f; font-size: 17px; }
+    .muted { color: #756d63; font-size: 12px; }
+    .tarjeta { margin: 11px 0; padding: 14px; border: 1px solid #e3d9ca; border-radius: 13px; background: white; }
+    .marca { display: block; width: 148px; height: 148px; margin: 12px auto; object-fit: contain; border-radius: 16px; background: #f4ead7; }
+    .centrado { text-align: center; }
+    label { display: block; margin: 10px 0 5px; color: #655b50; font-size: 12px; }
+    .campo { min-height: 42px; padding: 11px 12px; border: 1px solid #dfd4c5; border-radius: 8px; background: #fff; color: #5e564e; }
+    .multilinea { height: 93px; }
+    .boton { margin-top: 12px; padding: 12px 15px; border-radius: 9px; background: #7b1f3a; color: white; text-align: center; font-weight: 700; }
+    .secundario { border: 1px solid #7b1f3a; background: white; color: #7b1f3a; }
+    .link { margin-top: 12px; color: #7b1f3a; text-align: center; font-size: 13px; }
+    .fila { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip { padding: 8px 11px; border: 1px solid #d8cdbd; border-radius: 20px; color: #544b42; font-size: 12px; }
+    .chip.activo { border-color: #7b1f3a; background: #7b1f3a; color: white; }
+    .paso { display: inline-block; margin-right: 5px; color: #7b1f3a; font-weight: 800; }
+    .foto { height: 93px; display: flex; align-items: center; justify-content: center; border: 1px dashed #c5b7a4; border-radius: 10px; background: #f4ead7; color: #7b1f3a; font-size: 30px; }
+    .mapa {
+      position: relative;
+      height: 205px;
+      overflow: hidden;
+      border: 1px solid #d6cfc4;
+      border-radius: 11px;
+      background-color: #eeeae2;
+      background-image: linear-gradient(27deg, transparent 46%, #fff 47%, #fff 50%, transparent 51%), linear-gradient(111deg, transparent 42%, #fff 43%, #fff 46%, transparent 47%), linear-gradient(165deg, transparent 57%, #d0e5e4 58%, #d0e5e4 61%, transparent 62%);
+    }
+    .pin { position: absolute; top: 47%; left: 51%; color: #7b1f3a; font-size: 31px; text-shadow: 0 1px 2px white; }
+    .map-label { position: absolute; top: 8px; left: 10px; padding: 4px 7px; border-radius: 5px; background: #fffE; color: #6b6259; font-size: 10px; }
+    .exito { padding: 10px; border-radius: 9px; background: #edf7ed; color: #256a39; text-align: center; font-weight: 700; }
+    .estado { display: inline-block; padding: 4px 9px; border: 1px solid #d4bb7b; border-radius: 20px; background: #fff6df; color: #7a5715; font-size: 11px; }
+    .fab { float: right; margin-top: 5px; padding: 11px 15px; border-radius: 25px; background: #7b1f3a; color: white; font-weight: 700; }
+    body:not([data-screen="login"]) .login,
+    body:not([data-screen="inicio"]) .inicio,
+    body:not([data-screen="area"]) .area,
+    body:not([data-screen="detalle"]) .detalle,
+    body:not([data-screen="fotos"]) .fotos,
+    body:not([data-screen="ubicacion"]) .ubicacion,
+    body:not([data-screen="confirmacion"]) .confirmacion { display: none; }
+  </style>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.dataset.screen = location.hash.slice(1) || 'login';
+    });
+  </script>
+</head>
+<body>
+  <div class="telefono">
+    <div class="barra"></div>
+    <header class="appbar">
+      <img class="logo" src="../../mobile/assets/logo-mexticacan.png" alt="">
+      <div>SGI Mexticacán<small>Tu reporte, un mejor municipio</small></div>
+    </header>
+    <main class="contenido">
+      <section class="login">
+        <img class="marca" src="../../mobile/assets/logo-mexticacan.png" alt="">
+        <h1 class="centrado">Reporta tu incidencia</h1>
+        <p class="muted centrado">H. Ayuntamiento de Mexticacán, Jalisco</p>
+        <div class="tarjeta">
+          <label>Correo</label><div class="campo">tu-correo@ejemplo.com</div>
+          <label>Contraseña</label><div class="campo">••••••••</div>
+          <div class="boton">Iniciar sesión</div>
+          <div class="link">¿No tienes cuenta? Regístrate</div>
+        </div>
+      </section>
+      <section class="inicio">
+        <h1>Mis reportes</h1><p class="muted">Hola, usuario</p>
+        <div class="tarjeta"><b>MEX-000123 · Lámpara apagada</b><p class="muted">Alumbrado Público</p><span class="estado">En revisión</span></div>
+        <div class="tarjeta"><b>Consulta el avance</b><p class="muted">Abre un folio para ver estatus, comentarios e historial.</p></div>
+        <div class="fab">＋ Reportar</div>
+      </section>
+      <section class="area">
+        <h1><span class="paso">1.</span> ¿Qué tipo de problema es?</h1>
+        <p class="muted">Selecciona un área y una categoría.</p>
+        <div class="tarjeta">
+          <h2>Área</h2><div class="fila">
+            <span class="chip">Alumbrado Público</span><span class="chip">Parques y Jardines</span>
+            <span class="chip">Aseo Público</span><span class="chip">Obras Públicas</span><span class="chip activo">Agua Potable</span>
+          </div>
+        </div>
+        <div class="tarjeta"><h2>Tipo de incidencia</h2><div class="fila"><span class="chip activo">Fuga de agua</span><span class="chip">Falta de suministro</span><span class="chip">Baja presión</span></div></div>
+        <div class="boton">Continuar</div>
+      </section>
+      <section class="detalle">
+        <h1><span class="paso">2.</span> Describe la incidencia</h1>
+        <div class="tarjeta">
+          <label>Título</label><div class="campo">Fuga de agua en la banqueta</div>
+          <label>Descripción</label><div class="campo multilinea">Describe qué ocurre, desde cuándo y alguna referencia que ayude a atender el reporte.</div>
+          <p class="muted">Usa información clara y evita incluir datos personales que no sean necesarios.</p>
+        </div>
+        <div class="boton">Continuar</div>
+      </section>
+      <section class="fotos">
+        <h1><span class="paso">3.</span> Fotografías (1/5)</h1>
+        <p class="muted">Agrega al menos una imagen. Máximo cinco.</p>
+        <div class="tarjeta"><div class="foto">＋</div><p class="muted centrado">Vista previa de la foto seleccionada</p>
+          <div class="boton secundario">Tomar foto</div><div class="boton secundario">Elegir de galería</div>
+        </div>
+        <div class="boton">Continuar</div>
+      </section>
+      <section class="ubicacion">
+        <h1><span class="paso">4.</span> Ubicación</h1>
+        <p class="muted">Ubicación GPS · revisa el punto en el mapa</p>
+        <div class="mapa"><span class="map-label">Ajusta el marcador al lugar del problema</span><span class="pin">●</span></div>
+        <div class="boton secundario">📍 Usar mi ubicación actual</div>
+        <div class="tarjeta"><label>Dirección / referencia</label><div class="campo">Calle, número, entre calles…</div><label>Comunidad / colonia</label><div class="campo">Cabecera municipal</div></div>
+        <div class="boton">Enviar reporte</div>
+      </section>
+      <section class="confirmacion">
+        <header class="appbar" style="margin: -16px -16px 20px;">
+          <img class="logo" src="../../mobile/assets/logo-mexticacan.png" alt="">
+          <div>SGI Mexticacán<small>Tu reporte, un mejor municipio</small></div>
+        </header>
+        <div style="height:95px"></div>
+        <div class="exito">✓ &nbsp; ¡Reporte enviado!</div>
+        <div class="tarjeta centrado">
+          <p class="muted">Tu folio es</p><h1>MEX-000123</h1>
+          <p>Guarda el folio para consultar el avance de tu reporte.</p>
+          <span class="estado">Recibida</span>
+        </div>
+        <div class="boton">Ver mi reporte</div>
+        <div class="link">Volver a Mis reportes</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

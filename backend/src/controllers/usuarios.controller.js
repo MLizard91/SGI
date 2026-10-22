@@ -3,8 +3,9 @@ const { sql, request } = require('../config/db');
 const { HttpError, requerir, entero } = require('../utils/errores');
 const { ROLES } = require('../utils/roles');
 
+// Protección de datos personales: los listados no exponen correo ni teléfono, solo el nombre.
 const SELECT = `
-  SELECT u.IdUsuario, u.Nombre, u.Apellidos, u.Correo, u.Telefono, u.Activo,
+  SELECT u.IdUsuario, u.Nombre, u.Apellidos, u.Activo,
          u.FechaRegistro, u.UltimoAcceso, u.IdRol, r.Nombre AS Rol, u.IdArea, a.Nombre AS Area
     FROM Usuarios u
     JOIN Roles r ON r.IdRol = u.IdRol
@@ -17,7 +18,7 @@ async function listar(req, res) {
   if (req.query.rol) { r.input('Rol', sql.Int, Number(req.query.rol)); cond.push('u.IdRol = @Rol'); }
   if (req.query.buscar) {
     r.input('Buscar', sql.NVarChar(160), `%${req.query.buscar}%`);
-    cond.push('(u.Nombre LIKE @Buscar OR u.Apellidos LIKE @Buscar OR u.Correo LIKE @Buscar)');
+    cond.push('(u.Nombre LIKE @Buscar OR u.Apellidos LIKE @Buscar)');
   }
   const resultado = await r.query(`${SELECT} WHERE ${cond.join(' AND ')} ORDER BY r.IdRol, u.Nombre`);
   res.json(resultado.recordset);
@@ -55,7 +56,8 @@ async function crear(req, res) {
   res.status(201).json(nuevo.recordset[0]);
 }
 
-// PUT /api/usuarios/:id   body: { nombre, apellidos, telefono, idRol, idArea, activo, password? }
+// PUT /api/usuarios/:id   body: { nombre, apellidos, idRol, idArea, activo, telefono?, password? }
+// El teléfono no se envía al panel; si no viene en el body se conserva el actual.
 async function actualizar(req, res) {
   const id = entero(req.params.id, 'Id');
   requerir(req.body, ['nombre', 'idRol']);
@@ -68,6 +70,7 @@ async function actualizar(req, res) {
     .input('Nombre', sql.NVarChar(100), req.body.nombre.trim())
     .input('Apellidos', sql.NVarChar(150), req.body.apellidos || null)
     .input('Telefono', sql.NVarChar(20), req.body.telefono || null)
+    .input('CambiarTelefono', sql.Bit, req.body.telefono !== undefined)
     .input('IdRol', sql.Int, entero(req.body.idRol, 'Rol'))
     .input('IdArea', sql.Int, req.body.idArea ? Number(req.body.idArea) : null)
     .input('Activo', sql.Bit, req.body.activo !== false);
@@ -80,7 +83,8 @@ async function actualizar(req, res) {
   }
 
   const resultado = await r.query(`
-    UPDATE Usuarios SET Nombre = @Nombre, Apellidos = @Apellidos, Telefono = @Telefono,
+    UPDATE Usuarios SET Nombre = @Nombre, Apellidos = @Apellidos,
+           Telefono = CASE WHEN @CambiarTelefono = 1 THEN @Telefono ELSE Telefono END,
            IdRol = @IdRol, IdArea = @IdArea, Activo = @Activo ${setPassword}
      WHERE IdUsuario = @Id`);
   if (!resultado.rowsAffected[0]) throw new HttpError(404, 'Usuario no encontrado');

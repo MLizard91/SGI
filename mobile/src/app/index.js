@@ -8,7 +8,7 @@ export default function Inicio() {
   const { usuario, cargando } = useAuth();
   if (cargando) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', backgroundColor: COLORES.azul }}>
+      <View style={{ flex: 1, justifyContent: 'center', backgroundColor: COLORES.guinda }}>
         <ActivityIndicator color="#fff" size="large" />
       </View>
     );

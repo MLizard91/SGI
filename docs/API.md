@@ -49,10 +49,10 @@ curl -X POST http://localhost:4000/api/incidencias \
 
 | Método | Ruta                  | Acceso | Descripción |
 |--------|-----------------------|--------|-------------|
-| GET    | `/usuarios`           | Admin  | Query: `rol, buscar` |
+| GET    | `/usuarios`           | Admin  | Query: `rol, buscar` (por nombre). No devuelve correo ni teléfono |
 | GET    | `/usuarios/personal`  | Admin, Recepción, Encargado | Personal asignable. Query: `area` |
 | POST   | `/usuarios`           | Admin  | `{ nombre, apellidos?, correo, telefono?, password, idRol, idArea? }` |
-| PUT    | `/usuarios/:id`       | Admin  | `{ nombre, apellidos?, telefono?, idRol, idArea?, activo, password? }` |
+| PUT    | `/usuarios/:id`       | Admin  | `{ nombre, apellidos?, telefono?, idRol, idArea?, activo, password? }`. Si no se envía `telefono` se conserva el actual |
 
 ## Reportes y estadísticas
 
@@ -60,6 +60,7 @@ curl -X POST http://localhost:4000/api/incidencias \
 |--------|-----------------------|--------|-------------|
 | GET    | `/reportes/resumen`   | Personal | Query: `desde, hasta, area`. `{ totales, porArea, porEstatus, porMes }` |
 | GET    | `/reportes/exportar`  | Admin, Recepción, Encargado | Descarga CSV de incidencias. Query: `desde, hasta, area` |
+| GET    | `/reportes/pdf`       | Admin, Recepción, Encargado | Descarga el reporte en PDF del periodo. Query obligatoria: `desde, hasta` (AAAA-MM-DD, máx. 1 año); opcional `area`. Solo incluye nombres (sin correos ni teléfonos) |
 
 ## Notificaciones
 

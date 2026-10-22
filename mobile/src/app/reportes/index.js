@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   vacio: { alignItems: 'center', marginTop: 60 },
   vacioTexto: { textAlign: 'center', color: COLORES.muted, marginTop: 10, fontSize: 15, lineHeight: 22 },
   fab: {
-    position: 'absolute', right: 20, bottom: 30, backgroundColor: COLORES.azul, paddingHorizontal: 22, paddingVertical: 16,
+    position: 'absolute', right: 20, bottom: 30, backgroundColor: COLORES.guinda, paddingHorizontal: 22, paddingVertical: 16,
     borderRadius: 999, elevation: 6, shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 8, shadowOffset: { width: 0, height: 4 },
   },
   fabTexto: { color: '#fff', fontWeight: '800', fontSize: 16 },

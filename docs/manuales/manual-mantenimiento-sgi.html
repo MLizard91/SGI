@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual de mantenimiento técnico | SGI Mexticacán</title>
+  <style>
+    :root { --guinda:#7b1f3a; --oscuro:#541329; --beige:#f4ead7; --tinta:#292522; --gris:#6b625b; --borde:#dfd6c9; --fondo:#fbf9f5; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--tinta); background:#e9e4dc; font:9.8pt/1.4 "Segoe UI",Arial,sans-serif; }
+    .pagina { position:relative; width:210mm; height:297mm; margin:12mm auto; padding:16mm 17mm 19mm; overflow:hidden; background:#fff; box-shadow:0 2mm 8mm #0002; page-break-after:always; }
+    .pagina:last-child { page-break-after:auto; }
+    h1,h2,h3 { color:var(--oscuro); line-height:1.18; }
+    h1 { margin:0 0 5mm; font-size:30pt; } h2 { margin:0 0 3mm; font-size:19pt; } h3 { margin:3mm 0 1mm; font-size:11.5pt; }
+    p { margin:1.3mm 0 2.2mm; } ol,ul { margin:1.3mm 0 2.5mm; padding-left:7mm; } li { margin:1mm 0; }
+    .barra { height:3mm; margin:-16mm -17mm 9mm; background:var(--guinda); }
+    .pie { position:absolute; right:17mm; bottom:7mm; left:17mm; display:flex; justify-content:space-between; padding-top:1.4mm; border-top:.3mm solid var(--borde); color:var(--gris); font-size:8pt; }
+    .portada { display:flex; flex-direction:column; justify-content:space-between; background:linear-gradient(155deg,#fff 0 56%,var(--beige) 56% 100%); }
+    .marca { width:52mm; height:auto; margin:8mm 0 19mm; }
+    .sub { color:var(--gris); font-size:14.5pt; }
+    .edicion { margin-top:7mm; color:var(--guinda); font-weight:700; }
+    .etiqueta { display:inline-block; margin-bottom:2.5mm; padding:1.3mm 3mm; border-radius:10mm; background:var(--beige); color:var(--oscuro); font-size:8.3pt; font-weight:700; letter-spacing:.4pt; text-transform:uppercase; }
+    .nota { margin:2mm 0; padding:2.6mm 3.5mm; border-left:1.1mm solid var(--guinda); border-radius:1.5mm; background:var(--fondo); }
+    .nota strong,.paso b { color:var(--guinda); }
+    .paso { margin:1.8mm 0; padding:2mm 2.8mm; border:.3mm solid var(--borde); border-radius:2mm; }
+    .code { margin:2mm 0; padding:2.5mm 3mm; border-radius:2mm; background:#282522; color:#fff; font:8.2pt/1.4 Consolas,"Courier New",monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+    table { width:100%; margin:2.5mm 0; border-collapse:collapse; font-size:8.6pt; }
+    th { background:var(--guinda); color:white; text-align:left; }
+    th,td { padding:1.7mm 2.2mm; border:.3mm solid var(--borde); vertical-align:top; }
+    tr:nth-child(even) td { background:var(--fondo); }
+    .pequeno { color:var(--gris); font-size:8pt; }
+    .dos { display:grid; grid-template-columns:1fr 1fr; gap:3mm; }
+    .panel { padding:2.5mm; border:.3mm solid var(--borde); border-radius:2mm; }
+    .portada .pie { border-color:#bba996; }
+    @page { size:A4; margin:0; }
+    @media print { body { background:#fff; } .pagina { width:210mm; height:297mm; margin:0; box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <section class="pagina portada">
+    <div>
+      <img class="marca" src="../../mobile/assets/logo-mexticacan.png" alt="Mexticacán Incidencias">
+      <span class="etiqueta">Guía para responsables técnicos</span>
+      <h1>Manual de<br>mantenimiento</h1>
+      <p class="sub">Operación segura, respaldos, actualización y recuperación</p>
+      <p>SGI · H. Ayuntamiento de Mexticacán, Jalisco</p>
+      <p class="edicion">Edición · 15 de octubre de 2026</p>
+    </div>
+    <div>
+      <div class="nota"><strong>Alcance.</strong> Orientación técnica para mantener la API Node.js, el panel web React/Vite, la app Expo, SQL Server y archivos de imágenes en una instancia controlada.</div>
+      <p class="pequeno">Los comandos de inicio del repositorio son de desarrollo. La operación en producción debe usar infraestructura administrada, HTTPS, servicios supervisados y un plan municipal de seguridad.</p>
+    </div>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>15 octubre 2026</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">1 · Componentes</span>
+    <h2>Mapa de mantenimiento</h2>
+    <table>
+      <tr><th>Componente</th><th>Responsabilidad</th><th>Comprobación</th></tr>
+      <tr><td>SQL Server · `SGI_Mexticacan`</td><td>Usuarios, roles, incidencias, comentarios, historial, notificaciones y rutas de imágenes.</td><td>Servicio SQL activo; conexión de API; respaldo vigente.</td></tr>
+      <tr><td>Backend · `backend`</td><td>API Express, JWT, Socket.IO, carga de archivos y acceso a SQL Server.</td><td>`GET /api/salud`; revisar salida de Node.js.</td></tr>
+      <tr><td>Panel web · `web`</td><td>Interfaz municipal React/Vite y comunicación con API.</td><td>La URL web carga y consulta datos de API.</td></tr>
+      <tr><td>App móvil · `mobile`</td><td>Expo Router, app ciudadana, GPS/cámara y conexión a API.</td><td>Expo Doctor/export en entorno de validación; prueba controlada en dispositivo.</td></tr>
+      <tr><td>Imágenes · `backend/uploads`</td><td>Fotos de reportes y evidencias; la base guarda las rutas.</td><td>Espacio libre, permisos y respaldo conjunto con la base.</td></tr>
+    </table>
+    <h3>Principios de mantenimiento</h3>
+    <ul>
+      <li>Realiza cambios primero en desarrollo/validación; acuerda ventana de mantenimiento.</li>
+      <li>Antes de un cambio, confirma respaldo recuperable de base y `backend/uploads`.</li>
+      <li>Conserva los archivos `.env` fuera del control de versiones y con permisos restringidos.</li>
+      <li>La respuesta de `/api/salud` verifica HTTP, no demuestra por sí sola el estado correcto de SQL, fotos o inicio de sesión.</li>
+      <li>Registra responsable, cambio, fecha, validaciones y resultado de recuperación.</li>
+    </ul>
+    <div class="nota"><strong>Importante:</strong> los scripts `database\01_esquema.sql`, `02_catalogos.sql` y `03_procedimientos.sql` son de inicialización. No los ejecutes indiscriminadamente sobre una base existente; realiza cambios de esquema mediante un procedimiento versionado y respaldado.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Componentes</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">2 · Rutinas operativas</span>
+    <h2>Verificación y ciclo de servicio</h2>
+    <h3>Revisión de inicio de jornada</h3>
+    <ol>
+      <li>Confirma que SQL Server está activo y que el equipo/servicio puede conectarse a la base SGI.</li>
+      <li>Confirma la API con `http://servidor:4000/api/salud` y revisa que no existan errores de conexión en el proceso.</li>
+      <li>Abre panel web, inicia sesión con una cuenta de prueba autorizada y revisa incidencias, notificaciones y mapa.</li>
+      <li>En una prueba móvil controlada, confirma que Expo y la API son accesibles desde el teléfono; no uses localhost en el teléfono.</li>
+      <li>Revisa espacio libre para base, logs y `backend\uploads`.</li>
+    </ol>
+    <h3>Inicio local de desarrollo (PowerShell)</h3>
+    <p>Abre tres terminales en la raíz. SQL Server debe estar activo y cada `.env` correctamente configurado.</p>
+    <div class="code"># Terminal 1: API
+Set-Location .\backend
+npm install
+npm run dev
+
+# Terminal 2: panel web
+Set-Location .\web
+npm install
+npm run dev
+
+# Terminal 3: app Expo
+Set-Location .\mobile
+npm install
+npx expo start</div>
+    <p>Para teléfono, configura `EXPO_PUBLIC_API_URL` con la IP local de la computadora y puerto 4000; no uses `localhost`. Para detener el desarrollo, `Ctrl+C` en cada terminal.</p>
+    <div class="nota"><strong>Desarrollo no es producción:</strong> `npm run dev` activa el modo de observación de Node y Vite; Expo inicia Metro. No son, por sí solos, una topología de despliegue productivo.</div>
+    <h3>Seguimiento de eventos</h3>
+    <p>El backend escribe mensajes en stdout/stderr. En producción, el responsable debe redirigirlos a un recolector con rotación y retención. No guardar contraseñas ni tokens en logs o capturas.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Rutinas</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">3 · Configuración y seguridad</span>
+    <h2>Variables, cuentas y secretos</h2>
+    <table>
+      <tr><th>Archivo privado</th><th>Variables/ajustes relevantes</th><th>Regla operativa</th></tr>
+      <tr><td>`backend\.env`</td><td>`PORT`, `DB_SERVER`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_ENCRYPT`, `DB_TRUST_CERT`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `CORS_ORIGIN`, `MAX_IMAGE_MB`.</td><td>Conservar en el servidor; restringir permisos. `JWT_SECRET` largo, aleatorio y confidencial.</td></tr>
+      <tr><td>`web\.env`</td><td>`VITE_API_URL`.</td><td>Apuntar a la API correcta. No poner secretos privados en variables expuestas al navegador.</td></tr>
+      <tr><td>`mobile\.env`</td><td>`EXPO_PUBLIC_API_URL`.</td><td>URL accesible desde el dispositivo; cualquier variable `EXPO_PUBLIC_` es pública en el cliente.</td></tr>
+    </table>
+    <h3>Rutina de seguridad</h3>
+    <ul>
+      <li>Restringe SQL Server, carpetas de cargas, `.env`, respaldos y exportaciones a personal autorizado.</li>
+      <li>Restringe `CORS_ORIGIN` a orígenes municipales confiables en despliegues accesibles fuera del equipo local.</li>
+      <li>No expongas HTTP de desarrollo a Internet. Usa HTTPS y controles de red/identidad de la infraestructura oficial.</li>
+      <li>Administra usuarios con cuentas individuales; desactiva accesos al terminar la necesidad y aplica privilegio mínimo.</li>
+      <li>Al rotar `JWT_SECRET`, planifica que las sesiones firmadas con el valor anterior serán invalidadas; comunica un nuevo inicio de sesión.</li>
+      <li>Las fotos contienen información municipal; evita copiarlas a destinos personales o publicar enlaces.</li>
+    </ul>
+    <h3>Subidas de imágenes</h3>
+    <p>El backend guarda archivos bajo `backend\uploads`; los nombres se generan con identificador único. Se admiten JPG, PNG, WEBP y HEIC, máximo 5 archivos por carga, con tamaño por archivo gobernado por `MAX_IMAGE_MB` (por defecto 8 MB). Debe conservarse la carpeta junto con la base para que las referencias existentes sigan funcionando.</p>
+    <div class="nota"><strong>Credenciales comprometidas:</strong> desactiva la cuenta afectada si corresponde, cambia secreto/contraseña con autorización, revisa accesos y conserva evidencia para investigación. No borres logs o registros pertinentes.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Seguridad</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">4 · Respaldos</span>
+    <h2>Respaldar y validar recuperación</h2>
+    <p>El repositorio no instala ni programa un servicio automático de respaldos. El responsable técnico municipal debe establecer frecuencia, retención, cifrado, ubicación, custodios y pruebas de restauración.</p>
+    <h3>Conjunto mínimo a proteger</h3>
+    <ul>
+      <li>Base de datos SQL Server `SGI_Mexticacan`.</li>
+      <li>Archivos de `backend\uploads`.</li>
+      <li>Configuración privada `.env` mediante un gestor seguro de secretos (no copiarla al repositorio junto con el respaldo).</li>
+      <li>Versión de código/dependencias y scripts de base de datos usados para esa versión.</li>
+    </ul>
+    <h3>Ejemplo de respaldo manual de SQL Server</h3>
+    <p>Ejecuta en SSMS con una cuenta autorizada y una ruta protegida existente en el servidor de base de datos. Cambia ruta y nombre según la política local:</p>
+    <div class="code">BACKUP DATABASE [SGI_Mexticacan]
+TO DISK = N'D:\Respaldos\SGI_Mexticacan_full.bak'
+WITH COPY_ONLY, CHECKSUM, COMPRESSION, INIT, STATS = 10;
+
+RESTORE VERIFYONLY
+FROM DISK = N'D:\Respaldos\SGI_Mexticacan_full.bak'
+WITH CHECKSUM;</div>
+    <p class="pequeno">Si la edición de SQL Server no admite una opción, confirma el comando con el DBA antes de quitarla. Protege la ruta; `INIT` reemplaza el archivo de respaldo indicado.</p>
+    <h3>Respaldo de archivos y consistencia</h3>
+    <p>La base contiene rutas de fotografías, no los bytes de imagen. Copia `backend\uploads` a almacenamiento protegido. Coordina las copias con un snapshot consistente o pausa temporalmente escrituras/cargas para evitar que base y archivos representen momentos incompatibles. Verifica conteo/tamaño, permisos y restauración de archivos.</p>
+    <div class="nota"><strong>Restauración:</strong> prueba en una instancia aislada con nombre y rutas separadas. No uses `WITH REPLACE` ni restaures sobre producción durante una prueba. Verifica inicio de sesión, lectura de registros, detalle e imágenes de una muestra autorizada.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Respaldos</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">5 · Actualizaciones</span>
+    <h2>Aplicar cambios con control</h2>
+    <ol>
+      <li>Registra solicitud, motivo, componentes afectados, responsable, ventana y criterio de reversión.</li>
+      <li>Genera y valida respaldo de SQL Server y `backend\uploads` antes de actualizar.</li>
+      <li>Obtén la versión aprobada del código y conserva `package-lock.json`; no alteres versiones sin revisar compatibilidad.</li>
+      <li>Instala desde lockfile en cada proyecto usando la versión de Node/npm aprobada.</li>
+      <li>Ejecuta pruebas/build/Expo Doctor en un entorno de desarrollo antes de habilitar usuarios.</li>
+      <li>Si el cambio modifica esquema, prepara y revisa un script incremental reversible; no vuelvas a ejecutar los scripts de creación inicial como migración.</li>
+      <li>Aplica la actualización en la ventana acordada y realiza verificaciones funcionales.</li>
+      <li>Documenta resultado, incidencias y decisión de mantener o revertir.</li>
+    </ol>
+    <h3>Validación del repositorio</h3>
+    <div class="code"># API: pruebas (solo base de desarrollo)
+Set-Location .\backend
+npm ci
+npm test
+
+# Web: compilación
+Set-Location ..\web
+npm ci
+npm run build
+
+# App móvil: verificaciones y bundle Android
+Set-Location ..\mobile
+npm ci
+npx expo-doctor
+npx expo export --platform android</div>
+    <div class="nota"><strong>Advertencia de pruebas:</strong> las pruebas de backend crean datos temporales y limpian esa corrida. Ejecuta `npm test` exclusivamente contra una base de desarrollo aislada; nunca contra producción.</div>
+    <p>Para que el usuario móvil reciba el nuevo bundle Expo, sigue el proceso de distribución configurado por el equipo. `expo export` valida/exporta, no publica por sí solo en tiendas ni actualiza automáticamente dispositivos.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Actualizaciones</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">6 · Diagnóstico y recuperación</span>
+    <h2>Respuesta ante fallas frecuentes</h2>
+    <table>
+      <tr><th>Problema</th><th>Diagnóstico inicial</th><th>Acción segura</th></tr>
+      <tr><td>API sin conexión</td><td>Revisa stdout/stderr y endpoint de salud.</td><td>Confirma proceso, puerto, variable `PORT` y conectividad a SQL; conserva el error sin secretos.</td></tr>
+      <tr><td>Error SQL</td><td>Valida servicio, servidor/puerto/base, permisos y TCP/IP.</td><td>No cambies ni recrees tablas a ciegas. Consulta al DBA y conserva respaldo antes de cualquier ajuste.</td></tr>
+      <tr><td>Web no carga datos</td><td>Verifica URL de web y `VITE_API_URL`; revisa API/CORS.</td><td>Confirma origen permitido y que la API responde desde la red del panel.</td></tr>
+      <tr><td>Móvil no conecta</td><td>Valida IP, `EXPO_PUBLIC_API_URL`, Metro, Wi-Fi y firewall.</td><td>Usa dirección de servidor alcanzable; reinicia bundle de desarrollo después de editar configuración.</td></tr>
+      <tr><td>Imagen no aparece</td><td>Revisa la ruta DB, archivo bajo `backend\uploads`, permisos y espacio.</td><td>Restaura desde copia aprobada; no borres archivos para liberar espacio sin identificar referencias.</td></tr>
+      <tr><td>Disco lleno</td><td>Revisa base, uploads, logs y backups.</td><td>Escala al responsable; no elimines logs, evidencia o copias retenidas sin autorización.</td></tr>
+    </table>
+    <h3>Procedimiento de recuperación</h3>
+    <ol>
+      <li>Notifica a responsables y determina alcance, hora de inicio y servicios afectados.</li>
+      <li>Evita escribir sobre base/archivos si hay corrupción o pérdida sospechada. Conserva logs y copias originales.</li>
+      <li>Decide con DBA/municipio si se restaura una copia en entorno aislado o en el servicio controlado.</li>
+      <li>Restaura base y uploads correspondientes al mismo punto temporal; valida datos, imágenes, login y permisos.</li>
+      <li>Reabre acceso gradualmente y registra el incidente, decisiones, tiempo de recuperación y pendientes.</li>
+    </ol>
+    <div class="nota"><strong>Escalamiento:</strong> fallas con datos personales, acceso indebido o exposición de secretos deben notificarse al responsable municipal de seguridad por el canal institucional.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Diagnóstico</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">7 · Registro de mantenimiento</span>
+    <h2>Control de cambios y revisión</h2>
+    <p>Completa un registro por cada intervención de mantenimiento:</p>
+    <table>
+      <tr><th>Campo</th><th>Información a registrar</th></tr>
+      <tr><td>Fecha/hora y responsable</td><td>Nombre institucional y periodo de intervención.</td></tr>
+      <tr><td>Versión antes / después</td><td>Hash/etiqueta de código, versiones Node/npm, paquetes y entorno.</td></tr>
+      <tr><td>Motivo y alcance</td><td>Incidencia, actualización o tarea preventiva; componentes afectados.</td></tr>
+      <tr><td>Respaldo</td><td>Identificador y ubicación protegida, verificación, inclusión de uploads y prueba de restauración.</td></tr>
+      <tr><td>Acciones y validaciones</td><td>Pasos, resultados HTTP, pruebas controladas y observaciones; no incluir secretos.</td></tr>
+      <tr><td>Resultado / reversión</td><td>Éxito, pendientes, decisión, responsable de aprobación y ruta de retorno.</td></tr>
+    </table>
+    <h3>Lista periódica recomendada</h3>
+    <div class="paso"><b>Diaria:</b> salud de API/SQL, errores, espacio disponible, colas de trabajo y reportes críticos.</div>
+    <div class="paso"><b>Periódica según política municipal:</b> validar que existan respaldos, revisar accesos/cuentas activas, rotación de logs, capacidad de uploads y alertas.</div>
+    <div class="paso"><b>Antes de cada liberación:</b> pruebas en desarrollo, chequeo de roles, cargas de imagen, conexión móvil/web, respaldo y procedimiento de reversión.</div>
+    <div class="paso"><b>Después de cada recuperación:</b> reconciliar cantidad/identidad de registros y accesibilidad de imágenes; confirmar con responsables que el servicio es consistente.</div>
+    <p class="pequeno">Este manual describe las capacidades visibles del repositorio y recomienda que el Ayuntamiento formalice RPO/RTO, retención, monitoreo, cifrado, responsables y horarios de mantenimiento según sus obligaciones.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual de mantenimiento</span><span>Control y mejora</span></div>
+  </section>
+</body>
+</html>

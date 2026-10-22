@@ -6,12 +6,13 @@ export const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.50:4
 export const CENTRO_MEXTICACAN = { latitude: 21.2667, longitude: -102.7833 };
 
 export const COLORES = {
-  azul: '#1E3A8A',
-  azulClaro: '#2563EB',
-  fondo: '#F1F5F9',
-  texto: '#0F172A',
-  muted: '#64748B',
-  borde: '#E2E8F0',
-  rojo: '#DC2626',
+  guinda: '#7A1F2B',
+  guindaClaro: '#A83A43',
+  beige: '#EEE4D2',
+  fondo: '#F7F3EB',
+  texto: '#302A27',
+  muted: '#71675E',
+  borde: '#E4D9C8',
+  rojo: '#A32632',
   blanco: '#FFFFFF',
 };

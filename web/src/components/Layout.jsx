@@ -8,11 +8,11 @@ export default function Layout() {
     <div className="layout">
       <aside className="sidebar">
         <div className="marca">
-          <span className="logo">SGI</span>
-          <div>
-            <strong>Mexticacán</strong>
-            <small>Gestión de Incidencias</small>
-          </div>
+          <img
+            className="marca-imagen"
+            src="/logo-mexticacan.png"
+            alt="Mexticacán Incidencias: tu reporte, un mejor municipio"
+          />
         </div>
         <nav>
           <NavLink to="/" end>📊 Dashboard</NavLink>

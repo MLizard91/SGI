@@ -4,6 +4,8 @@ import { api, descargar, formatoFecha } from '../api';
 import { useSocketEvent } from '../context/SocketContext';
 import MapaIncidencias from '../components/MapaIncidencias';
 import { EstatusBadge, PrioridadBadge } from '../components/Badges';
+import ReportePdf from '../components/ReportePdf';
+import { useAuth } from '../context/AuthContext';
 
 function Barras({ filas, etiqueta, valor, color }) {
   const max = Math.max(1, ...filas.map(valor));
@@ -23,6 +25,7 @@ function Barras({ filas, etiqueta, valor, color }) {
 }
 
 export default function Dashboard() {
+  const { usuario } = useAuth();
   const [resumen, setResumen] = useState(null);
   const [abiertas, setAbiertas] = useState([]);
   const [recientes, setRecientes] = useState([]);
@@ -61,6 +64,8 @@ export default function Dashboard() {
           <strong>{t.HorasPromedioResolucion == null ? '—' : `${Number(t.HorasPromedioResolucion).toFixed(1)} h`}</strong>
         </div>
       </div>
+
+      {usuario.Rol !== 'Operativo' && <ReportePdf />}
 
       <div className="grid-2">
         <section className="tarjeta">

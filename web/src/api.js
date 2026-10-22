@@ -28,10 +28,13 @@ export async function api(ruta, { method = 'GET', body, formData } = {}) {
   return datos;
 }
 
-// Descarga un archivo protegido (por ejemplo el CSV de reportes)
+// Descarga un archivo protegido (por ejemplo el CSV o el PDF de reportes)
 export async function descargar(ruta, nombre) {
   const res = await fetch(`${API_URL}/api${ruta}`, { headers: { Authorization: `Bearer ${obtenerToken()}` } });
-  if (!res.ok) throw new Error('No se pudo descargar el archivo');
+  if (!res.ok) {
+    const datos = await res.json().catch(() => ({}));
+    throw new Error(datos.mensaje || 'No se pudo descargar el archivo');
+  }
   const url = URL.createObjectURL(await res.blob());
   const a = document.createElement('a');
   a.href = url;

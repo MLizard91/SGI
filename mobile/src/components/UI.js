@@ -16,9 +16,9 @@ export function Boton({ titulo, onPress, cargando, deshabilitado, variante = 'pr
       ]}
     >
       {cargando ? (
-        <ActivityIndicator color={secundario ? COLORES.azul : '#fff'} />
+        <ActivityIndicator color={secundario ? COLORES.guinda : '#fff'} />
       ) : (
-        <Text style={[styles.botonTexto, secundario && { color: COLORES.azul }]}>{titulo}</Text>
+        <Text style={[styles.botonTexto, secundario && { color: COLORES.guinda }]}>{titulo}</Text>
       )}
     </Pressable>
   );
@@ -41,7 +41,7 @@ export function EstatusBadge({ nombre, color }) {
   );
 }
 
-export function Chip({ texto, activo, color = COLORES.azul, onPress }) {
+export function Chip({ texto, activo, color = COLORES.guinda, onPress }) {
   return (
     <Pressable onPress={onPress} style={[styles.chip, activo && { backgroundColor: color, borderColor: color }]}>
       <Text style={[styles.chipTexto, activo && { color: '#fff' }]}>{texto}</Text>
@@ -58,7 +58,7 @@ export function Titulo({ children }) {
 }
 
 const styles = StyleSheet.create({
-  boton: { backgroundColor: COLORES.azul, paddingVertical: 14, borderRadius: 10, alignItems: 'center' },
+  boton: { backgroundColor: COLORES.guinda, paddingVertical: 14, borderRadius: 10, alignItems: 'center' },
   botonSecundario: { backgroundColor: '#fff', borderWidth: 1, borderColor: COLORES.borde },
   botonTexto: { color: '#fff', fontWeight: '700', fontSize: 16 },
   etiqueta: { color: COLORES.muted, marginBottom: 6, fontSize: 13 },
@@ -74,5 +74,5 @@ const styles = StyleSheet.create({
   },
   chipTexto: { color: COLORES.texto, fontSize: 14 },
   tarjeta: { backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 14, borderWidth: 1, borderColor: COLORES.borde },
-  titulo: { fontSize: 16, fontWeight: '700', color: COLORES.azul, marginBottom: 10 },
+  titulo: { fontSize: 16, fontWeight: '700', color: COLORES.guinda, marginBottom: 10 },
 });

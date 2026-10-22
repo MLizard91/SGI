@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual paso a paso para crear reportes | SGI Mexticacán</title>
+  <style>
+    :root { --guinda: #7b1f3a; --oscuro: #541329; --beige: #f4ead7; --tinta: #292522; --gris: #6b625b; --borde: #dfd6c9; --fondo: #fbf9f5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--tinta); background: #e9e4dc; font: 10.5pt/1.45 "Segoe UI", Arial, sans-serif; }
+    .pagina { position: relative; width: 210mm; height: 297mm; margin: 12mm auto; padding: 18mm 18mm 20mm; overflow: hidden; background: #fff; box-shadow: 0 2mm 8mm #0002; page-break-after: always; }
+    .pagina:last-child { page-break-after: auto; }
+    h1, h2, h3 { color: var(--oscuro); line-height: 1.2; }
+    h1 { margin: 0 0 5mm; font-size: 27pt; } h2 { margin: 0 0 4mm; font-size: 20pt; } h3 { margin: 4mm 0 2mm; font-size: 12.5pt; }
+    p { margin: 2mm 0 3mm; } ul, ol { margin: 2mm 0 3mm; padding-left: 7mm; } li { margin: 1.3mm 0; }
+    .barra { height: 3mm; margin: -18mm -18mm 11mm; background: var(--guinda); }
+    .pie { position: absolute; right: 18mm; bottom: 8mm; left: 18mm; padding-top: 2mm; border-top: .3mm solid var(--borde); color: var(--gris); font-size: 8pt; display: flex; justify-content: space-between; }
+    .portada { display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(155deg,#fff 0 56%,var(--beige) 56% 100%); }
+    .portada .marca { width: 52mm; margin: 9mm 0 23mm; }
+    .portada h1 { max-width: 155mm; font-size: 33pt; }
+    .portada .sub { color: var(--gris); font-size: 15pt; }
+    .version { margin-top: 8mm; color: var(--guinda); font-weight: 700; }
+    .rol { display: inline-block; margin-bottom: 3mm; padding: 1.5mm 3mm; border-radius: 10mm; background: var(--beige); color: var(--oscuro); font-size: 9pt; font-weight: 700; text-transform: uppercase; letter-spacing: .4pt; }
+    .nota { margin: 3mm 0; padding: 3mm 4mm; border-left: 1.2mm solid var(--guinda); border-radius: 1.5mm; background: var(--fondo); }
+    .nota strong { color: var(--oscuro); }
+    .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+    figure { margin: 3mm 0; }
+    figure img { display: block; width: 100%; max-height: 114mm; object-fit: contain; object-position: center; border: .35mm solid var(--borde); border-radius: 2mm; background: #f5f1ea; }
+    figure.phone img { height: 105mm; max-height: 105mm; object-fit: contain; }
+    figcaption { margin-top: 1mm; color: var(--gris); font-size: 8.3pt; }
+    .mini img { height: 68mm; max-height: 68mm; }
+    .fila figure { margin: 2mm 0; }
+    .fila figure img { height: 78mm; max-height: 78mm; }
+    .paso { margin: 2mm 0; padding: 2.5mm 3mm; border: .3mm solid var(--borde); border-radius: 2mm; }
+    .paso b { color: var(--guinda); }
+    .pequeno { color: var(--gris); font-size: 8.5pt; }
+    .portada .pie { border-color: #bba996; }
+    @page { size: A4; margin: 0; }
+    @media print { body { background: #fff; } .pagina { width: 210mm; height: 297mm; margin: 0; box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <section class="pagina portada">
+    <div>
+      <img class="marca" src="../../mobile/assets/logo-mexticacan.png" alt="Mexticacán Incidencias">
+      <div class="rol">Guía ilustrada · app móvil</div>
+      <h1>Crear un reporte<br>paso a paso</h1>
+      <p class="sub">Instrucciones desde el inicio de sesión para ciudadanía y personal municipal</p>
+      <p>H. Ayuntamiento de Mexticacán, Jalisco</p>
+      <p class="version">Edición · 15 de octubre de 2026</p>
+    </div>
+    <div>
+      <div class="nota"><strong>Perfiles incluidos</strong><br>Ciudadano · Administrador · Encargado de Área · Responsable Operativo</div>
+      <p class="pequeno">Las pantallas del flujo móvil que aparecen en esta guía son recreaciones ilustrativas basadas en los campos y controles implementados. No son capturas de una sesión en un teléfono real. Las cuentas y el folio de ejemplo son ficticios.</p>
+    </div>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>15 octubre 2026</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Antes de iniciar · acceso</div>
+    <h2>¿Quién puede crear un reporte?</h2>
+    <p>En esta versión, el formulario <strong>＋ Reportar</strong> está en la aplicación móvil. El panel web municipal permite gestionar incidencias y cuentas, pero no incluye un botón para crear reportes.</p>
+    <table style="width:100%;border-collapse:collapse;margin:4mm 0;font-size:9.5pt">
+      <tr style="background:#7b1f3a;color:white"><th style="padding:2.5mm;text-align:left">Perfil</th><th style="padding:2.5mm;text-align:left">Acceso antes de reportar</th><th style="padding:2.5mm;text-align:left">Alcance al consultar</th></tr>
+      <tr><td style="padding:2.5mm;border:1px solid #dfd6c9">Ciudadano</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Crea su cuenta en móvil desde Regístrate.</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Sus reportes.</td></tr>
+      <tr><td style="padding:2.5mm;border:1px solid #dfd6c9">Administrador</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Cuenta institucional creada por el procedimiento administrativo.</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Todas las áreas.</td></tr>
+      <tr><td style="padding:2.5mm;border:1px solid #dfd6c9">Encargado de Área</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Cuenta creada por Administrador y ligada a un área.</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Reportes de su área.</td></tr>
+      <tr><td style="padding:2.5mm;border:1px solid #dfd6c9">Responsable Operativo</td><td style="padding:2.5mm;border:1px solid #dfd6c9">En el sistema el rol se llama Operativo; usa la cuenta y área asignadas.</td><td style="padding:2.5mm;border:1px solid #dfd6c9">Reportes asignados a su cuenta.</td></tr>
+    </table>
+    <div class="nota"><strong>Identidad del reporte:</strong> el sistema registra como persona que reportó a la cuenta con la que se inició sesión. Si un empleado usa su cuenta municipal, el reporte queda asociado a ese empleado; no se registra como anónimo ni como otro ciudadano.</div>
+    <h3>Inicio de sesión común para las cuatro cuentas</h3>
+    <ol>
+      <li>Abre la aplicación móvil SGI Mexticacán instalada o el proyecto de pruebas en Expo Go.</li>
+      <li>Escribe el correo asignado a tu cuenta y su contraseña; pulsa <strong>Iniciar sesión</strong>.</li>
+      <li>Al entrar, abre <strong>Mis reportes</strong> y pulsa <strong>＋ Reportar</strong>.</li>
+    </ol>
+    <p class="pequeno">Ciudadanía que aún no tiene cuenta: pulsa <strong>¿No tienes cuenta? Regístrate</strong>, completa nombre, correo y contraseña (mínimo 8 caracteres), confirma la contraseña y crea la cuenta. Las cuentas municipales no se registran desde ese enlace; las crea el Administrador.</p>
+    <figure class="phone">
+      <img src="capturas-uso/login.png" alt="Recreación ilustrativa de la pantalla de inicio de sesión móvil">
+      <figcaption>Vista ilustrativa de acceso móvil; sustituye el texto de ejemplo por las credenciales de tu propia cuenta. Nunca compartas tu contraseña.</figcaption>
+    </figure>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Acceso</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Flujo común · Mis reportes</div>
+    <h2>Abre el formulario y elige el área</h2>
+    <p>Después de iniciar sesión, el flujo es el mismo en la app móvil para los perfiles autorizados.</p>
+    <div class="fila">
+      <figure class="phone mini">
+        <img src="capturas-uso/inicio.png" alt="Recreación ilustrativa de Mis reportes con el botón Reportar">
+        <figcaption>1. En Mis reportes, pulsa <strong>＋ Reportar</strong>.</figcaption>
+      </figure>
+      <figure class="phone mini">
+        <img src="capturas-uso/area.png" alt="Recreación ilustrativa de selección de área y categoría">
+        <figcaption>2. Selecciona un área y una categoría del catálogo.</figcaption>
+      </figure>
+    </div>
+    <div class="paso"><b>Si no puedes iniciar sesión:</b> revisa correo, contraseña y conexión. En las cuentas municipales confirma que el usuario esté activo.</div>
+    <div class="paso"><b>Para la ciudadanía:</b> selecciona el servicio donde está el problema.</div>
+    <div class="paso"><b>Para el Encargado:</b> elige el área que tiene asociada su cuenta para que el reporte quede dentro de su ámbito de consulta.</div>
+    <div class="paso"><b>Para el Operativo:</b> confirma con el Encargado a qué área corresponde el problema y solicita asignación del folio a su usuario para el seguimiento.</div>
+    <div class="nota"><strong>Selección por perfil:</strong> el Ciudadano elige el área del problema. El Encargado debe usar el área que tiene asignada para poder consultar el reporte después. El Operativo debe coordinar el área con su responsable; su bandeja solo muestra reportes asignados a su cuenta.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Formulario · 1 de 3</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Flujo común · Información del reporte</div>
+    <h2>Describe y documenta el problema</h2>
+    <div class="fila">
+      <figure class="phone mini">
+        <img src="capturas-uso/detalle.png" alt="Recreación ilustrativa de los campos título y descripción">
+        <figcaption><strong>3. Describe:</strong> título breve y detalles útiles, como qué ocurre y referencias del lugar.</figcaption>
+      </figure>
+      <figure class="phone mini">
+        <img src="capturas-uso/fotos.png" alt="Recreación ilustrativa de la sección para adjuntar fotografías">
+        <figcaption><strong>4. Adjunta:</strong> de 1 a 5 fotos desde cámara o galería. Concede permisos si el teléfono los solicita.</figcaption>
+      </figure>
+    </div>
+    <div class="nota">Evita incluir datos personales innecesarios. Si el envío presenta un error, verifica primero Mis reportes o pide al área municipal revisar el folio antes de repetirlo.</div>
+    <div class="nota"><strong>Evita duplicados:</strong> si la app muestra un error al enviar, verifica primero Mis reportes o pide al área municipal revisar el folio antes de repetir el envío.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Formulario · 2 de 3</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Flujo común · Ubicación y confirmación</div>
+    <h2>Ubica, envía y guarda el folio</h2>
+    <div class="fila">
+      <figure class="phone mini">
+        <img src="capturas-uso/ubicacion.png" alt="Recreación ilustrativa del mapa y referencias del lugar">
+        <figcaption><strong>5. Ubica:</strong> permite GPS o marca manualmente el punto; completa dirección y comunidad si se conocen.</figcaption>
+      </figure>
+      <figure class="phone mini">
+        <img src="capturas-uso/confirmacion.png" alt="Recreación ilustrativa de la confirmación y el folio">
+        <figcaption><strong>6. Envía:</strong> pulsa Enviar reporte una vez y guarda el folio generado. El folio es ficticio.</figcaption>
+      </figure>
+    </div>
+    <div class="nota"><strong>Campos requeridos:</strong> área/categoría, título, descripción, al menos una fotografía y ubicación. Después de enviar, vuelve a Mis reportes para consultar estatus, comentarios e historial.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Formulario · 3 de 3</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 1 · Ciudadano</div>
+    <h2>Crear y seguir tu reporte</h2>
+    <ol>
+      <li>Si eres nuevo, crea tu cuenta desde <strong>Regístrate</strong>. Si ya tienes cuenta, inicia sesión con tu correo y contraseña.</li>
+      <li>En Mis reportes, pulsa <strong>＋ Reportar</strong>. Elige el área y categoría del problema.</li>
+      <li>Escribe título y descripción; agrega de 1 a 5 fotos y confirma la ubicación en el mapa.</li>
+      <li>Completa dirección y comunidad si están disponibles. Pulsa <strong>Enviar reporte</strong>.</li>
+      <li>Guarda el folio y consúltalo en Mis reportes. Abre el detalle para ver el avance y añadir comentarios.</li>
+    </ol>
+    <div class="nota"><strong>Alcance ciudadano:</strong> la cuenta de ciudadanía solo consulta reportes creados con esa misma cuenta. Si cambias de cuenta, tus folios no aparecerán.</div>
+    <figure class="phone mini"><img src="capturas-uso/inicio.png" alt="Pantalla ilustrativa de Mis reportes"><figcaption>Consulta y creación de reportes desde la sesión de ciudadanía.</figcaption></figure>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Ciudadano</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 2 · Administrador</div>
+    <h2>Crear un reporte desde la cuenta municipal</h2>
+    <ol>
+      <li>Inicia sesión en la app móvil con el correo y contraseña del Administrador.</li>
+      <li>Abre Mis reportes y pulsa <strong>＋ Reportar</strong>; sigue los pasos comunes de área/categoría, descripción, fotos y ubicación.</li>
+      <li>Selecciona cualquier área pertinente. Verifica los datos y envía; conserva el folio.</li>
+      <li>Consulta el folio desde la app o gestiona el seguimiento desde el panel web.</li>
+    </ol>
+    <div class="nota"><strong>Importante:</strong> este reporte queda registrado con el nombre de la cuenta Administrador como persona reportante. Para registrar un reporte a nombre de un ciudadano, utiliza la cuenta del propio ciudadano o el procedimiento municipal autorizado; no uses credenciales ajenas.</div>
+    <p class="pequeno">Las cuentas de Administrador son creadas mediante el proceso de administración, no desde el enlace ciudadano Regístrate. El panel web no contiene un botón de creación de incidencias en esta versión.</p>
+    <div class="fila">
+      <figure class="phone mini"><img src="capturas-uso/login.png" alt="Inicio de sesión ilustrativo"><figcaption>Inicia sesión con tu cuenta institucional.</figcaption></figure>
+      <figure class="phone mini"><img src="capturas-uso/area.png" alt="Selección de área ilustrativa"><figcaption>Después, inicia el reporte en la app móvil.</figcaption></figure>
+    </div>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Ciudadano · Administrador</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 3 · Encargado de Área</div>
+    <h2>Crear un reporte de tu área</h2>
+    <ol>
+      <li>Inicia sesión en la app móvil con la cuenta institucional de Encargado de Área que te asignó el Administrador.</li>
+      <li>Abre Mis reportes, pulsa <strong>＋ Reportar</strong> y selecciona tu propia área. Escoge la categoría que describa el problema.</li>
+      <li>Completa título y descripción, adjunta al menos una foto y hasta cinco, y ajusta la ubicación GPS.</li>
+      <li>Agrega una referencia del sitio, envía el reporte y conserva el folio.</li>
+      <li>Abre el reporte para revisar avance y comentarios. Desde el panel web de tu área puedes coordinar su atención y asignación de personal.</li>
+    </ol>
+    <div class="nota"><strong>Área configurada:</strong> el sistema limita al Encargado a reportes de su área. Si el reporte pertenece a otra área, la cuenta no podrá verlo en su lista; solicita orientación antes de enviar.</div>
+    <figure class="phone mini"><img src="capturas-uso/area.png" alt="Selección ilustrativa de un área de servicio"><figcaption>El Encargado selecciona la categoría apropiada de su área asignada.</figcaption></figure>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Encargado de Área</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Perfil 4 · Responsable Operativo</div>
+    <h2>Registrar una observación de campo</h2>
+    <ol>
+      <li>Inicia sesión en la app móvil con la cuenta de rol <strong>Operativo</strong> que te asignó el Administrador.</li>
+      <li>En Mis reportes, pulsa <strong>＋ Reportar</strong>. Selecciona el área de la observación y llena los mismos campos que cualquier reporte.</li>
+      <li>Envía una sola vez y conserva el folio mostrado en la confirmación.</li>
+      <li>Solicita al Encargado o Administrador que asigne el reporte a tu cuenta si necesitas consultarlo posteriormente.</li>
+    </ol>
+    <div class="nota"><strong>Alcance del Operativo:</strong> el rol solo muestra reportes que están asignados a su cuenta. Si después de enviar ves un aviso de “reporte no encontrado” o el reporte no aparece, no lo envíes otra vez: comparte el folio con el Encargado/Administrador y solicita que confirme el registro y lo asigne a tu usuario.</div>
+    <p class="pequeno">La app móvil permite enviar el reporte con una sesión municipal, pero la bandeja de Operativo no incluye automáticamente todo lo que esa cuenta reporta; la asignación controla su consulta.</p>
+    <figure class="phone mini"><img src="capturas-uso/inicio.png" alt="Inicio ilustrativo de Mis reportes"><figcaption>Tras enviar, conserva el folio para que el responsable valide la asignación.</figcaption></figure>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Responsable Operativo</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div>
+    <div class="rol">Ayuda rápida</div>
+    <h2>Qué revisar si algo falla</h2>
+    <ul>
+      <li><strong>No puedo iniciar sesión:</strong> verifica correo y contraseña, conexión y que la cuenta municipal siga activa. El enlace Regístrate es solo para crear cuentas ciudadanas.</li>
+      <li><strong>No aparece ＋ Reportar:</strong> confirma que hayas iniciado sesión y estés en Mis reportes. Si persiste, informa la versión de la app y el perfil.</li>
+      <li><strong>El GPS no funciona:</strong> activa ubicación, concede permiso y marca manualmente el punto tocando el mapa.</li>
+      <li><strong>No puedo cargar fotos:</strong> concede acceso a cámara/galería, usa imágenes admitidas y respeta el máximo de cinco.</li>
+      <li><strong>El Operativo no encuentra el reporte:</strong> verifica el folio y pide que el reporte sea asignado a la cuenta Operativo correcta. No crees un duplicado.</li>
+      <li><strong>El envío falla:</strong> revisa conexión y Mis reportes antes de intentar de nuevo. Guarda el texto del error sin compartir contraseñas, tokens ni archivos de configuración.</li>
+    </ul>
+    <h3>Información útil para solicitar soporte</h3>
+    <p>Indica el perfil, fecha y hora, modelo de teléfono, pasos realizados, mensaje de error y folio si ya se generó. Comparte esos datos por el canal oficial indicado por el Ayuntamiento.</p>
+    <div class="nota"><strong>Capturas y versión.</strong> Las vistas del formulario y el inicio de sesión en esta guía son ilustraciones basadas en la interfaz implementada, no fotografías capturadas en una sesión real. Las capturas reales del repositorio disponibles corresponden al panel web; no se usan para simular pantallas de la app.</div>
+    <p class="pequeno">Requisitos confirmados del formulario: área y categoría, título, descripción, de 1 a 5 fotografías, latitud y longitud; dirección y comunidad son opcionales. El folio se muestra al completar el envío.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual de uso por perfil</span><span>Soporte</span></div>
+  </section>
+</body>
+</html>

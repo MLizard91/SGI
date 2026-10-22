@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual de operación por perfil | SGI Mexticacán</title>
+  <style>
+    :root { --guinda:#7b1f3a; --oscuro:#541329; --beige:#f4ead7; --tinta:#292522; --gris:#6b625b; --borde:#dfd6c9; --fondo:#fbf9f5; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--tinta); background:#e9e4dc; font:10pt/1.4 "Segoe UI",Arial,sans-serif; }
+    .pagina { position:relative; width:210mm; height:297mm; margin:12mm auto; padding:17mm 17mm 19mm; overflow:hidden; background:#fff; box-shadow:0 2mm 8mm #0002; page-break-after:always; }
+    .pagina:last-child { page-break-after:auto; }
+    h1,h2,h3 { color:var(--oscuro); line-height:1.18; }
+    h1 { margin:0 0 5mm; font-size:31pt; } h2 { margin:0 0 4mm; font-size:20pt; } h3 { margin:3.5mm 0 1.5mm; font-size:12pt; }
+    p { margin:1.5mm 0 2.5mm; } ol,ul { margin:1.5mm 0 3mm; padding-left:7mm; } li { margin:1.1mm 0; }
+    .barra { height:3mm; margin:-17mm -17mm 10mm; background:var(--guinda); }
+    .pie { position:absolute; right:17mm; bottom:7mm; left:17mm; display:flex; justify-content:space-between; padding-top:1.5mm; border-top:.3mm solid var(--borde); color:var(--gris); font-size:8pt; }
+    .portada { display:flex; flex-direction:column; justify-content:space-between; background:linear-gradient(155deg,#fff 0 56%,var(--beige) 56% 100%); }
+    .marca { width:53mm; height:auto; margin:8mm 0 20mm; }
+    .sub { color:var(--gris); font-size:15pt; }
+    .edicion { margin-top:7mm; color:var(--guinda); font-weight:700; }
+    .etiqueta { display:inline-block; margin-bottom:3mm; padding:1.5mm 3mm; border-radius:10mm; background:var(--beige); color:var(--oscuro); font-size:8.5pt; font-weight:700; letter-spacing:.4pt; text-transform:uppercase; }
+    .nota { margin:2.5mm 0; padding:3mm 4mm; border-left:1.1mm solid var(--guinda); border-radius:1.5mm; background:var(--fondo); }
+    .nota strong,.paso b { color:var(--guinda); }
+    figure { margin:2mm 0; }
+    figure img { display:block; width:100%; height:91mm; object-fit:contain; border:.3mm solid var(--borde); border-radius:2mm; background:#f5f2ed; }
+    figure.corta img { height:66mm; }
+    figcaption { margin-top:1mm; color:var(--gris); font-size:8pt; }
+    .paso { margin:2mm 0; padding:2.5mm 3mm; border:.3mm solid var(--borde); border-radius:2mm; }
+    .compacto li { margin:.8mm 0; }
+    .pequeno { color:var(--gris); font-size:8.2pt; }
+    table { width:100%; margin:3mm 0; border-collapse:collapse; font-size:9pt; }
+    th { background:var(--guinda); color:#fff; text-align:left; }
+    th,td { padding:2mm 2.5mm; border:.3mm solid var(--borde); vertical-align:top; }
+    tr:nth-child(even) td { background:var(--fondo); }
+    .dos { display:grid; grid-template-columns:1fr 1fr; gap:4mm; }
+    .panel { padding:3mm; border:.3mm solid var(--borde); border-radius:2mm; }
+    .portada .pie { border-color:#bba996; }
+    @page { size:A4; margin:0; }
+    @media print { body { background:#fff; } .pagina { width:210mm; height:297mm; margin:0; box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <section class="pagina portada">
+    <div>
+      <img class="marca" src="../../mobile/assets/logo-mexticacan.png" alt="Mexticacán Incidencias">
+      <span class="etiqueta">Sistema de Gestión de Incidencias</span>
+      <h1>Manual de<br>operación</h1>
+      <p class="sub">Procedimientos diarios por perfil de usuario</p>
+      <p>H. Ayuntamiento de Mexticacán, Jalisco</p>
+      <p class="edicion">Edición · 15 de octubre de 2026</p>
+    </div>
+    <div>
+      <div class="nota"><strong>Objetivo.</strong> Estandarizar el inicio de sesión, recepción, registro, asignación, atención y cierre de reportes para ciudadanía y personal municipal.</div>
+      <p class="pequeno">Las capturas del panel son de una instancia de demostración. Las vistas de móvil son recreaciones ilustrativas identificadas como tales.</p>
+    </div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>15 octubre 2026</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Marco operativo</span>
+    <h2>Roles, alcance y flujo</h2>
+    <table>
+      <tr><th>Perfil</th><th>Responsabilidad operativa</th><th>Alcance de consulta</th></tr>
+      <tr><td>Ciudadano</td><td>Reporta problemas y aporta información adicional.</td><td>Reportes de su propia cuenta.</td></tr>
+      <tr><td>Administrador</td><td>Supervisa el sistema, administra usuarios y gestiona todos los reportes.</td><td>Todas las áreas.</td></tr>
+      <tr><td>Recepcionista</td><td>Recibe, valida, clasifica, asigna y prioriza reportes.</td><td>Todas las áreas.</td></tr>
+      <tr><td>Encargado de Área</td><td>Coordina la atención y el personal de su área.</td><td>Su área asignada.</td></tr>
+      <tr><td>Operativo / Responsable</td><td>Atiende tareas asignadas, registra avance y evidencias.</td><td>Reportes asignados a su usuario.</td></tr>
+    </table>
+    <h3>Secuencia de atención</h3>
+    <p><strong>Recibida → En revisión → Asignada → En proceso → Resuelta → Cerrada</strong>. Un caso también puede quedar <strong>Rechazado</strong> cuando así lo determina el personal autorizado y se registra la explicación pertinente.</p>
+    <div class="dos">
+      <div class="panel"><strong>Canales</strong><br>La app móvil es la interfaz de reporte ciudadano. El panel web es la herramienta operativa municipal.</div>
+      <div class="panel"><strong>Identidad</strong><br>El sistema registra como reportante a la cuenta que crea el caso; no hay función de suplantación de ciudadano.</div>
+    </div>
+    <figure class="corta"><img src="../capturas/02-dashboard.png" alt="Dashboard de resumen del panel municipal"><figcaption>Dashboard municipal: indicadores, mapa y reportes recientes. Datos demostrativos.</figcaption></figure>
+    <div class="nota"><strong>Regla de operación:</strong> registrar acciones reales y verificables. No marcar como resuelto un trabajo pendiente.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Roles y flujo</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Procedimiento · acceso</span>
+    <h2>Ingreso y preparación de turno</h2>
+    <ol class="compacto">
+      <li>Abre la dirección del panel web indicada por el administrador, o la app móvil autorizada si tu función utiliza el flujo móvil.</li>
+      <li>Inicia sesión con tu correo y contraseña asignados. No compartas la cuenta.</li>
+      <li>Verifica en el encabezado el nombre, rol y, si aplica, área mostrada.</li>
+      <li>Confirma conectividad revisando la carga del Dashboard o de Mis reportes. Si falla, informa soporte antes de duplicar acciones.</li>
+      <li>Al finalizar, pulsa <strong>Salir</strong> y cierra el navegador/app en equipos compartidos.</li>
+    </ol>
+    <div class="nota"><strong>Usuarios municipales:</strong> las cuentas se crean y administran desde el módulo Usuarios por el Administrador. El registro público crea perfiles Ciudadano; no lo uses para crear personal.</div>
+    <figure class="corta"><img src="../capturas/03-incidencias.png" alt="Lista del panel con filtros"><figcaption>Lista web para localizar reportes mediante búsqueda, filtros y paginación.</figcaption></figure>
+    <h3>Recepción inicial de un caso (Recepcionista)</h3>
+    <ol class="compacto">
+      <li>Abre Incidencias y selecciona el aviso de reporte nuevo para actualizar la lista.</li>
+      <li>Abre el folio y comprueba categoría, descripción, fotos y ubicación.</li>
+      <li>Si falta contexto, agrega un comentario público solicitando información clara y necesaria.</li>
+      <li>Si el reporte es válido, asigna el área y personal disponible; ajusta prioridad de acuerdo con el impacto.</li>
+      <li>Deja el estatus correcto y revisa que el historial registre la acción.</li>
+    </ol>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Acceso · Recepción</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Sección 1 · Ciudadano</span>
+    <h2>Registrar y seguir un reporte</h2>
+    <p>El ciudadano ingresa a la aplicación móvil con su cuenta personal. Si aún no cuenta con ella, se registra desde la opción de creación de cuenta de la app.</p>
+    <figure class="corta"><img src="capturas-uso/login.png" alt="Pantalla de inicio móvil ilustrativa"><figcaption>Inicio móvil ilustrativo. Utiliza tus propias credenciales, nunca los ejemplos.</figcaption></figure>
+    <h3>Procedimiento de reporte</h3>
+    <ol class="compacto">
+      <li>Regístrate con nombre, correo y contraseña de al menos 8 caracteres; o inicia sesión.</li>
+      <li>En Mis reportes, pulsa <strong>＋ Reportar</strong>.</li>
+      <li>Selecciona una de las cinco áreas municipales y la categoría apropiada.</li>
+      <li>Escribe un título y una descripción concreta: qué ocurre, desde cuándo y cómo localizar el sitio.</li>
+      <li>Adjunta de una a cinco fotografías pertinentes; utiliza cámara o galería.</li>
+      <li>Revisa el punto GPS. Permite ubicación o marca el sitio manualmente; completa dirección/comunidad si se conocen.</li>
+      <li>Pulsa Enviar reporte y espera el folio de confirmación. Guárdalo.</li>
+      <li>Consulta Mis reportes para ver el estatus, historial, evidencias y responder por Comentarios.</li>
+    </ol>
+    <figure class="corta"><img src="capturas-uso/ubicacion.png" alt="Pantalla de ubicación ilustrativa"><figcaption>El mapa y la referencia permiten ubicar el problema. Vista móvil ilustrativa.</figcaption></figure>
+    <div class="nota"><strong>Si el envío parece fallar:</strong> revisa Mis reportes antes de reenviar. Comparte el folio con el Ayuntamiento; no crees un duplicado.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Ciudadano</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Sección 2 · Administrador</span>
+    <h2>Supervisar y administrar el sistema</h2>
+    <h3>Rutina de operación</h3>
+    <ol class="compacto">
+      <li>Inicia sesión en el panel web y revisa los indicadores y reportes recientes.</li>
+      <li>Abre Incidencias, revisa los casos urgentes y filtra por área, estatus, prioridad y fechas.</li>
+      <li>Abre el folio, valida información, asigna personal y define prioridad/estatus según el procedimiento municipal.</li>
+      <li>Utiliza comentarios públicos para comunicar al ciudadano e internos para coordinación municipal.</li>
+      <li>Comprueba los cambios en el historial. Exporta CSV solo cuando sea necesario y guarda el archivo en una ubicación autorizada.</li>
+    </ol>
+    <figure class="corta"><img src="../capturas/02-dashboard.png" alt="Dashboard web"><figcaption>Dashboard: seguimiento del trabajo; cifras ilustrativas.</figcaption></figure>
+    <h3>Alta y actualización de cuentas</h3>
+    <ol class="compacto">
+      <li>En Usuarios, selecciona + Nuevo usuario.</li>
+      <li>Captura nombre y correo institucional, elige rol y asigna área a Encargado u Operativo.</li>
+      <li>Define contraseña inicial segura y entrégala al titular por canal protegido.</li>
+      <li>Para baja de acceso, edita la cuenta y desmarca Cuenta activa. No desactives tu propia cuenta.</li>
+      <li>Revisa periódicamente las cuentas activas y elimina permisos que ya no correspondan.</li>
+    </ol>
+    <figure class="corta"><img src="../capturas/07-usuarios-formulario.png" alt="Formulario para crear usuario"><figcaption>Formulario de usuarios visible al Administrador; asigna privilegios mínimos.</figcaption></figure>
+    <div class="nota"><strong>Seguridad:</strong> nunca envíes contraseñas por comentarios, ni guardes credenciales en manuales, exportaciones o capturas.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Administrador</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Sección 3 · Recepcionista</span>
+    <h2>Clasificar, asignar y priorizar</h2>
+    <p>El Recepcionista tiene alcance transversal para la recepción y coordinación inicial de reportes.</p>
+    <figure class="corta"><img src="../capturas/03-incidencias.png" alt="Lista de incidencias"><figcaption>Bandeja de reportes con filtros y datos de prueba.</figcaption></figure>
+    <ol class="compacto">
+      <li>Revisa nuevos reportes y abre cada folio.</li>
+      <li>Comprueba que el área/categoría coincida con la descripción y que la ubicación permita atenderlo.</li>
+      <li>Solicita aclaración con un comentario público si la información es insuficiente.</li>
+      <li>Asigna a un Encargado/Operativo del área correcta y establece prioridad operativa.</li>
+      <li>Mantén el estatus actualizado conforme avance el trabajo.</li>
+      <li>Antes del cierre, revisa evidencia, notas y respuesta al ciudadano.</li>
+    </ol>
+    <div class="nota"><strong>Si no hay personal disponible:</strong> no asignar a una cuenta equivocada. Deja el caso en el estatus correcto y coordina con Administración/Encargado.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Recepcionista</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Sección 4 · Encargado de Área</span>
+    <h2>Coordinar la atención de su área</h2>
+    <p>El Encargado solo consulta incidencias de su área. Las funciones de asignación y prioridad operan sobre su ámbito.</p>
+    <figure class="corta"><img src="../capturas/06-mapa.png" alt="Mapa municipal de incidencias"><figcaption>Mapa de incidencias por área; puntos demostrativos.</figcaption></figure>
+    <ol class="compacto">
+      <li>En el panel, revisa nuevos casos, filtros y mapa. Confirma que el área del encabezado sea la correcta.</li>
+      <li>Abre un folio y revisa categoría, fotos, descripción y ubicación.</li>
+      <li>Asigna a personal activo de tu área; selecciona prioridad pertinente.</li>
+      <li>Comunica al ciudadano un avance estimado solo cuando esté confirmado.</li>
+      <li>Coordina la visita y solicita al Operativo que registre proceso, evidencias y resolución.</li>
+      <li>Revisa casos urgentes, sin asignar o sin avances y deja comentario interno para coordinación.</li>
+      <li>Confirma la evidencia y el estatus antes de cerrar el ciclo.</li>
+    </ol>
+    <div class="nota"><strong>Reportes en el móvil:</strong> el Encargado puede enviar un reporte desde la app usando su propia cuenta. Ese registro queda a su nombre y solo podrá consultarlo si corresponde a su área. El panel web no crea reportes en esta versión.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Encargado de Área</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Sección 5 · Operativo / Responsable</span>
+    <h2>Ejecutar y documentar el trabajo</h2>
+    <p>El Operativo trabaja sobre incidencias asignadas a su cuenta. Puede marcar En proceso o Resuelta; no puede cambiar a otros estatus de gestión.</p>
+    <figure class="corta"><img src="../capturas/05-detalle-atencion-recortada.png" alt="Panel de acciones del reporte, recortado para privacidad"><figcaption>Acciones de atención ilustradas: estatus, nota, asignación, prioridad y evidencias. El Operativo solo verá las opciones permitidas por su rol.</figcaption></figure>
+    <ol class="compacto">
+      <li>Inicia sesión en el panel web y abre la incidencia asignada. Confirma dirección, descripción e historial.</li>
+      <li>Al comenzar la intervención, registra En proceso.</li>
+      <li>Documenta hallazgos o impedimentos con comentario objetivo; evita datos personales.</li>
+      <li>Al terminar, carga hasta cinco fotos de evidencia pertinentes.</li>
+      <li>Registra una nota de trabajo completado y marca Resuelta únicamente si el servicio se restableció de acuerdo con el procedimiento del área.</li>
+      <li>Verifica que el historial y las evidencias aparezcan en el detalle.</li>
+    </ol>
+    <div class="nota"><strong>El reporte no aparece:</strong> informa al Encargado el folio; puede ser necesario que asignen el caso a tu usuario. No intentes acceder por otra cuenta.</div>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Operativo</span></div>
+  </section>
+
+  <section class="pagina">
+    <div class="barra"></div><span class="etiqueta">Cierre de turno · control</span>
+    <h2>Revisión, pendientes y escalamiento</h2>
+    <div class="dos">
+      <div class="panel"><h3>Lista de salida</h3>
+        <ul class="compacto">
+          <li>Casos urgentes revisados.</li>
+          <li>Reportes nuevos clasificados y asignados o escalados.</li>
+          <li>Avances reales reflejados en el estatus e historial.</li>
+          <li>Ciudadanos informados cuando corresponde.</li>
+          <li>Evidencias pertinentes adjuntadas.</li>
+          <li>Sesión cerrada en dispositivos compartidos.</li>
+        </ul>
+      </div>
+      <div class="panel"><h3>Al solicitar soporte</h3>
+        <ul class="compacto">
+          <li>Fecha/hora y pantalla del problema.</li>
+          <li>Perfil y área (sin contraseña).</li>
+          <li>Pasos realizados y mensaje de error.</li>
+          <li>Folio si el problema es de un reporte.</li>
+          <li>Dispositivo, sistema y navegador/app.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="nota"><strong>Protección de datos:</strong> comparte información por canales oficiales. No envíes tokens, contraseñas, archivos `.env`, exportaciones completas o fotos personales por canales públicos.</div>
+    <p>Las notificaciones y actualizaciones en tiempo real requieren conectividad. Si un cambio no se refleja, actualiza la pantalla y verifica historial antes de repetir la operación.</p>
+    <p class="pequeno">La app móvil de reportes es para Ciudadano y permite que otros roles autorizados creen incidencias si inician sesión; el autor queda registrado como la cuenta usada. Las tareas de administración y atención se ejecutan desde el panel web conforme al rol.</p>
+    <div class="pie"><span>SGI Mexticacán · Manual de operación</span><span>Control de turno</span></div>
+  </section>
+</body>
+</html>

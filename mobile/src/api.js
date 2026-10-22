@@ -10,10 +10,40 @@ export const borrarToken = () => SecureStore.deleteItemAsync(LLAVE_TOKEN);
 
 export const imagenUrl = (ruta) => (ruta ? `${API_URL}/${ruta}` : null);
 
+const SIN_CONEXION = `No se pudo conectar con el servidor (${API_URL}). Revisa tu conexión.`;
+
+function respuestaConError(status, datos) {
+  const error = new Error(datos.mensaje || 'Ocurrió un error');
+  error.status = status;
+  return error;
+}
+
+// Envío de formularios con fotos.
+// El fetch de Expo (SDK 52+) no acepta archivos como { uri, name, type },
+// pero XMLHttpRequest de React Native sí, en Android y en iPhone.
+function enviarFormulario(url, method, headers, formData) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    Object.entries(headers).forEach(([k, v]) => xhr.setRequestHeader(k, v));
+    xhr.timeout = 60000;
+    xhr.onload = () => {
+      let datos = {};
+      try { datos = JSON.parse(xhr.responseText); } catch { /* respuesta sin JSON */ }
+      if (xhr.status >= 200 && xhr.status < 300) resolve(datos);
+      else reject(respuestaConError(xhr.status, datos));
+    };
+    xhr.onerror = () => reject(new Error(SIN_CONEXION));
+    xhr.ontimeout = () => reject(new Error('El envío tardó demasiado. Intenta con menos fotos o mejor señal.'));
+    xhr.send(formData);
+  });
+}
+
 export async function api(ruta, { method = 'GET', body, formData } = {}) {
   const headers = {};
   const token = await leerToken();
   if (token) headers.Authorization = `Bearer ${token}`;
+  if (formData) return enviarFormulario(`${API_URL}/api${ruta}`, method, headers, formData);
   if (body) headers['Content-Type'] = 'application/json';
 
   let res;
@@ -21,17 +51,13 @@ export async function api(ruta, { method = 'GET', body, formData } = {}) {
     res = await fetch(`${API_URL}/api${ruta}`, {
       method,
       headers,
-      body: formData || (body ? JSON.stringify(body) : undefined),
+      body: body ? JSON.stringify(body) : undefined,
     });
   } catch {
-    throw new Error(`No se pudo conectar con el servidor (${API_URL}). Revisa tu conexión.`);
+    throw new Error(SIN_CONEXION);
   }
   const datos = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    const error = new Error(datos.mensaje || 'Ocurrió un error');
-    error.status = res.status;
-    throw error;
-  }
+  if (!res.ok) throw respuestaConError(res.status, datos);
   return datos;
 }
 

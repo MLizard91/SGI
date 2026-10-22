@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Linking, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import MapView, { Marker } from 'react-native-maps';
 import { api, formatoFecha, imagenUrl } from '../../api';
 import { useSocketEvent } from '../../context/SocketContext';
 import { Boton, Campo, EstatusBadge, Tarjeta, Titulo } from '../../components/UI';
+import MapaOSM from '../../components/MapaOSM';
 import { COLORES } from '../../config';
 
 // Pasos que ve el ciudadano para entender en qué va su reporte
@@ -42,14 +42,23 @@ export default function DetalleReporte() {
     }
   }
 
-  if (!inc) return <ActivityIndicator style={{ marginTop: 40 }} size="large" color={COLORES.azul} />;
+  if (!inc) return <ActivityIndicator style={{ marginTop: 40 }} size="large" color={COLORES.guinda} />;
 
   const pasoActual = PASOS.indexOf(inc.Estatus);
   const coordenada = { latitude: Number(inc.Latitud), longitude: Number(inc.Longitud) };
   const evidencias = inc.imagenes.filter((i) => i.Tipo === 'Evidencia');
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40 }} keyboardShouldPersistTaps="handled">
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+      >
       <Tarjeta>
         <Text style={styles.folio}>{inc.Folio} · {inc.Area}</Text>
         <Text style={styles.titulo}>{inc.Titulo}</Text>
@@ -100,14 +109,7 @@ export default function DetalleReporte() {
 
       <Tarjeta>
         <Titulo>Ubicación</Titulo>
-        <MapView
-          style={styles.mapa}
-          initialRegion={{ ...coordenada, latitudeDelta: 0.004, longitudeDelta: 0.004 }}
-          scrollEnabled={false}
-          zoomEnabled={false}
-        >
-          <Marker coordinate={coordenada} pinColor={inc.ColorArea} />
-        </MapView>
+        <MapaOSM punto={coordenada} color={inc.ColorArea} altura={200} />
         {inc.Direccion ? <Text style={styles.texto}>{inc.Direccion}{inc.Comunidad ? `, ${inc.Comunidad}` : ''}</Text> : null}
         <Pressable onPress={() => Linking.openURL(`https://www.google.com/maps?q=${coordenada.latitude},${coordenada.longitude}`)}>
           <Text style={styles.link}>Abrir en Google Maps</Text>
@@ -147,6 +149,7 @@ export default function DetalleReporte() {
         </Pressable>
       </Modal>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -155,13 +158,12 @@ const styles = StyleSheet.create({
   titulo: { fontSize: 20, fontWeight: '800', color: COLORES.texto, marginVertical: 6 },
   texto: { color: COLORES.texto, fontSize: 15, lineHeight: 21, marginTop: 6 },
   meta: { color: COLORES.muted, fontSize: 12, marginTop: 4 },
-  link: { color: COLORES.azulClaro, marginTop: 8, fontWeight: '600' },
+  link: { color: COLORES.guindaClaro, marginTop: 8, fontWeight: '600' },
   pasos: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 16 },
   paso: { alignItems: 'center', flex: 1 },
   circulo: { width: 16, height: 16, borderRadius: 8, borderWidth: 2, borderColor: COLORES.borde, backgroundColor: '#fff', marginBottom: 4 },
   pasoTexto: { fontSize: 10, color: COLORES.muted, textAlign: 'center' },
   foto: { width: 120, height: 120, borderRadius: 10, marginRight: 8 },
-  mapa: { height: 200, borderRadius: 12 },
   evento: { borderLeftWidth: 4, paddingLeft: 10, marginBottom: 12 },
   comentario: { backgroundColor: COLORES.fondo, padding: 10, borderRadius: 10, marginBottom: 8 },
   comentarioPropio: { backgroundColor: '#EFF6FF' },

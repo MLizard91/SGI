@@ -13,7 +13,7 @@ function corsOrigin() {
 const app = express();
 app.use(cors({ origin: corsOrigin() }));
 app.use(express.json({ limit: '1mb' }));
-app.use(morgan('dev')); // bitácora de peticiones en consola
+if (process.env.NODE_ENV !== 'test') app.use(morgan('dev')); // bitácora de peticiones en consola
 
 // Imágenes subidas: http://servidor:4000/uploads/archivo.jpg
 app.use('/uploads', express.static(CARPETA, { maxAge: '7d' }));

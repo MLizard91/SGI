@@ -1,0 +1,87 @@
+[
+  {
+    "prueba": "Login con contraseña incorrecta muestra error",
+    "resultado": "OK",
+    "detalle": "Correo o contraseña incorrectos"
+  },
+  {
+    "prueba": "Un ciudadano no puede entrar al panel",
+    "resultado": "OK",
+    "detalle": ""
+  },
+  {
+    "prueba": "Dashboard carga tras login",
+    "resultado": "OK",
+    "detalle": "2915 ms"
+  },
+  {
+    "prueba": "Dashboard muestra el total de incidencias",
+    "resultado": "OK",
+    "detalle": "Total = 13"
+  },
+  {
+    "prueba": "Lista de incidencias",
+    "resultado": "FALLA",
+    "detalle": "1 filas"
+  },
+  {
+    "prueba": "Filtro por área (Agua Potable)",
+    "resultado": "OK",
+    "detalle": "3 filas"
+  },
+  {
+    "prueba": "Búsqueda por texto (\"Bache\")",
+    "resultado": "OK",
+    "detalle": "2 filas"
+  },
+  {
+    "prueba": "Aviso en tiempo real de reporte nuevo",
+    "resultado": "OK",
+    "detalle": "78 ms desde el envío"
+  },
+  {
+    "prueba": "La campana de notificaciones se actualiza",
+    "resultado": "OK",
+    "detalle": "contador = 14"
+  },
+  {
+    "prueba": "Cambiar estatus desde el detalle",
+    "resultado": "OK",
+    "detalle": ""
+  },
+  {
+    "prueba": "Asignar personal desde el detalle",
+    "resultado": "OK",
+    "detalle": ""
+  },
+  {
+    "prueba": "Agregar comentario",
+    "resultado": "OK",
+    "detalle": ""
+  },
+  {
+    "prueba": "Mapa muestra marcadores de incidencias abiertas",
+    "resultado": "OK",
+    "detalle": "12 marcadores"
+  },
+  {
+    "prueba": "Mapa carga el fondo de OpenStreetMap",
+    "resultado": "OK",
+    "detalle": "15 mosaicos"
+  },
+  {
+    "prueba": "Lista de usuarios",
+    "resultado": "OK",
+    "detalle": "7 usuarios"
+  },
+  {
+    "prueba": "Panel sin desbordamiento horizontal en pantalla de celular",
+    "resultado": "OK",
+    "detalle": "0px de más"
+  },
+  {
+    "prueba": "Sin errores de JavaScript en la consola",
+    "resultado": "FALLA",
+    "detalle": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+  }
+]

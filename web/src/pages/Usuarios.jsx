@@ -19,7 +19,7 @@ export default function Usuarios() {
   function editar(u) {
     setError('');
     setForm({
-      id: u.IdUsuario, nombre: u.Nombre, apellidos: u.Apellidos || '', correo: u.Correo, telefono: u.Telefono || '',
+      id: u.IdUsuario, nombre: u.Nombre, apellidos: u.Apellidos || '', correo: '', telefono: '',
       password: '', idRol: u.IdRol, idArea: u.IdArea || '', activo: u.Activo,
     });
   }
@@ -29,6 +29,8 @@ export default function Usuarios() {
     setError('');
     try {
       const body = { ...form, idRol: Number(form.idRol), idArea: form.idArea ? Number(form.idArea) : null };
+      // Al editar, el teléfono vacío significa "sin cambios" (no se muestra el actual por privacidad)
+      if (form.id && !form.telefono) delete body.telefono;
       if (form.id) await api(`/usuarios/${form.id}`, { method: 'PUT', body });
       else await api('/usuarios', { method: 'POST', body });
       setForm(null);
@@ -50,19 +52,18 @@ export default function Usuarios() {
       </div>
 
       <div className="tarjeta filtros">
-        <input placeholder="Buscar por nombre o correo…" value={buscar} onChange={(e) => setBuscar(e.target.value)} />
+        <input placeholder="Buscar por nombre…" value={buscar} onChange={(e) => setBuscar(e.target.value)} />
       </div>
 
       <div className="tarjeta tabla-contenedor">
         <table>
           <thead>
-            <tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Área</th><th>Estado</th><th>Último acceso</th><th></th></tr>
+            <tr><th>Nombre</th><th>Rol</th><th>Área</th><th>Estado</th><th>Último acceso</th><th></th></tr>
           </thead>
           <tbody>
             {usuarios.map((u) => (
               <tr key={u.IdUsuario}>
                 <td>{u.Nombre} {u.Apellidos}</td>
-                <td>{u.Correo}</td>
                 <td>{u.Rol}</td>
                 <td>{u.Area || '—'}</td>
                 <td>{u.Activo ? '✅ Activo' : '⛔ Inactivo'}</td>
@@ -81,8 +82,11 @@ export default function Usuarios() {
             <div className="grid-2">
               <label>Nombre<input {...campo('nombre')} required /></label>
               <label>Apellidos<input {...campo('apellidos')} /></label>
-              <label>Correo<input type="email" {...campo('correo')} required disabled={!!form.id} /></label>
-              <label>Teléfono<input {...campo('telefono')} /></label>
+              {!form.id && <label>Correo<input type="email" {...campo('correo')} required /></label>}
+              <label>
+                {form.id ? 'Nuevo teléfono (opcional)' : 'Teléfono'}
+                <input type="tel" {...campo('telefono')} placeholder={form.id ? 'Oculto por privacidad · vacío = sin cambios' : ''} />
+              </label>
               <label>
                 Rol
                 <select {...campo('idRol')} required>

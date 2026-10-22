@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
 import { api } from '../../api';
 import { Boton, Campo, Chip, Tarjeta, Titulo } from '../../components/UI';
-import { CENTRO_MEXTICACAN, COLORES } from '../../config';
+import MapaOSM from '../../components/MapaOSM';
+import { COLORES } from '../../config';
 
 const MAX_FOTOS = 5;
 
@@ -23,7 +23,7 @@ export default function NuevoReporte() {
   const [estadoGps, setEstadoGps] = useState('Buscando tu ubicación…');
   const [enviando, setEnviando] = useState(false);
   const ajusteManual = useRef(false);
-  const mapa = useRef(null);
+  const [seguirGps, setSeguirGps] = useState(true); // centrar el mapa en cada lectura del GPS
 
   useEffect(() => {
     api('/catalogos').then(setCatalogos).catch((e) => Alert.alert('Error', e.message));
@@ -46,7 +46,6 @@ export default function NuevoReporte() {
           const punto = { latitude: pos.coords.latitude, longitude: pos.coords.longitude, accuracy: pos.coords.accuracy };
           setUbicacion(punto);
           setEstadoGps(`Ubicación GPS (precisión ±${Math.round(pos.coords.accuracy || 0)} m)`);
-          mapa.current?.animateToRegion({ ...punto, latitudeDelta: 0.004, longitudeDelta: 0.004 }, 500);
         }
       );
     })();
@@ -72,19 +71,20 @@ export default function NuevoReporte() {
 
   function marcarManual(coordinate) {
     ajusteManual.current = true;
+    setSeguirGps(false);
     setUbicacion({ ...coordinate, accuracy: null });
     setEstadoGps('Ubicación ajustada manualmente');
   }
 
   async function usarGpsDeNuevo() {
     ajusteManual.current = false;
+    setSeguirGps(true);
     setEstadoGps('Buscando tu ubicación…');
     try {
       const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
       const punto = { latitude: pos.coords.latitude, longitude: pos.coords.longitude, accuracy: pos.coords.accuracy };
       setUbicacion(punto);
       setEstadoGps(`Ubicación GPS (precisión ±${Math.round(pos.coords.accuracy || 0)} m)`);
-      mapa.current?.animateToRegion({ ...punto, latitudeDelta: 0.004, longitudeDelta: 0.004 }, 500);
     } catch {
       setEstadoGps('No se pudo obtener el GPS. Toca el mapa para marcar el lugar.');
     }
@@ -140,11 +140,20 @@ export default function NuevoReporte() {
     }
   }
 
-  if (!catalogos) return <ActivityIndicator style={{ marginTop: 40 }} size="large" color={COLORES.azul} />;
+  if (!catalogos) return <ActivityIndicator style={{ marginTop: 40 }} size="large" color={COLORES.guinda} />;
   const area = catalogos.areas.find((a) => a.IdArea === idArea);
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40 }} keyboardShouldPersistTaps="handled">
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+      >
       <Tarjeta>
         <Titulo>1. ¿Qué tipo de problema es?</Titulo>
         <View style={styles.chips}>
@@ -193,17 +202,14 @@ export default function NuevoReporte() {
       <Tarjeta>
         <Titulo>4. Ubicación</Titulo>
         <Text style={styles.sub}>{estadoGps}</Text>
-        <MapView
-          ref={mapa}
-          style={styles.mapa}
-          initialRegion={{ ...CENTRO_MEXTICACAN, latitudeDelta: 0.02, longitudeDelta: 0.02 }}
-          showsUserLocation
-          onPress={(e) => marcarManual(e.nativeEvent.coordinate)}
-        >
-          {ubicacion && (
-            <Marker coordinate={ubicacion} draggable onDragEnd={(e) => marcarManual(e.nativeEvent.coordinate)} pinColor={area?.Color || COLORES.rojo} />
-          )}
-        </MapView>
+        <MapaOSM
+          punto={ubicacion}
+          centrar={seguirGps}
+          color={area?.Color || COLORES.rojo}
+          interactivo
+          onCambiar={marcarManual}
+          altura={260}
+        />
         <Text style={styles.ayuda}>Toca el mapa o arrastra el marcador si el punto no es exacto.</Text>
         <Boton titulo="📍 Usar mi ubicación actual" variante="secundario" onPress={usarGpsDeNuevo} estilo={{ marginBottom: 14 }} />
         <Campo etiqueta="Dirección / referencia" value={direccion} onChangeText={setDireccion} placeholder="Calle, número, entre calles…" />
@@ -211,7 +217,8 @@ export default function NuevoReporte() {
       </Tarjeta>
 
       <Boton titulo="Enviar reporte" onPress={enviar} cargando={enviando} />
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -224,6 +231,5 @@ const styles = StyleSheet.create({
     borderRadius: 12, alignItems: 'center', justifyContent: 'center',
   },
   filaBotones: { flexDirection: 'row', gap: 10, marginTop: 12 },
-  mapa: { height: 240, borderRadius: 12, marginBottom: 8 },
-  ayuda: { color: COLORES.muted, fontSize: 12, marginBottom: 12 },
+  ayuda: { color: COLORES.muted, fontSize: 12, marginTop: 8, marginBottom: 12 },
 });

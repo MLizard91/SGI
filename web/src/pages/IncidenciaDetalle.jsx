@@ -79,7 +79,7 @@ export default function IncidenciaDetalle() {
             <h3>Descripción</h3>
             <p className="texto">{inc.Descripcion}</p>
             <dl className="datos">
-              <dt>Reportó</dt><dd>{inc.Ciudadano}{inc.TelefonoCiudadano ? ` · ${inc.TelefonoCiudadano}` : ''}</dd>
+              <dt>Reportó</dt><dd>{inc.Ciudadano}</dd>
               <dt>Fecha</dt><dd>{formatoFecha(inc.FechaCreacion)}</dd>
               <dt>Dirección</dt><dd>{inc.Direccion || '—'}{inc.Comunidad ? ` (${inc.Comunidad})` : ''}</dd>
               <dt>Coordenadas</dt>

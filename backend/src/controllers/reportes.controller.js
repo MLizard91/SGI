@@ -1,5 +1,7 @@
 const { sql, request } = require('../config/db');
 const { ROLES } = require('../utils/roles');
+const { HttpError } = require('../utils/errores');
+const { generarReportePdf } = require('../services/reportePdf.service');
 
 // Los encargados solo ven las estadísticas de su propia área.
 function areaFiltro(req) {
@@ -54,4 +56,68 @@ async function exportarCsv(req, res) {
   res.send('﻿' + csv); // BOM para que Excel respete los acentos
 }
 
-module.exports = { resumen, exportarCsv };
+// Valida un periodo 'AAAA-MM-DD' (desde <= hasta, máximo un año).
+function periodo(q) {
+  const valida = (f) => typeof f === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(f)
+    && !Number.isNaN(Date.parse(f)) && new Date(`${f}T00:00:00Z`).toISOString().slice(0, 10) === f;
+  if (!valida(q.desde) || !valida(q.hasta)) throw new HttpError(400, 'Selecciona un periodo válido (desde y hasta)');
+  const dias = (Date.parse(q.hasta) - Date.parse(q.desde)) / 86400000;
+  if (dias < 0) throw new HttpError(400, 'La fecha inicial no puede ser posterior a la final');
+  if (dias > 366) throw new HttpError(400, 'El periodo del reporte no puede ser mayor a un año');
+  return { desde: q.desde, hasta: q.hasta };
+}
+
+// GET /api/reportes/pdf?desde=&hasta=&area=  -> reporte de incidencias del periodo en PDF
+async function exportarPdf(req, res) {
+  const { desde, hasta } = periodo(req.query);
+  const idArea = areaFiltro(req);
+  const parametros = async () => (await request())
+    .input('Desde', sql.Date, desde)
+    .input('Hasta', sql.Date, hasta)
+    .input('IdArea', sql.Int, idArea);
+
+  const estadisticas = await (await parametros()).execute('sp_EstadisticasGenerales');
+  const [[totales], porArea, porEstatus] = estadisticas.recordsets;
+
+  const r = await (await parametros())
+    .input('IdUsuario', sql.Int, req.usuario.id)
+    .query(`
+      SELECT c.Nombre AS Categoria, a.Nombre AS Area, COUNT(*) AS Total
+        FROM Incidencias i
+        JOIN Categorias c ON c.IdCategoria = i.IdCategoria
+        JOIN Areas a ON a.IdArea = i.IdArea
+       WHERE CAST(i.FechaCreacion AS DATE) BETWEEN @Desde AND @Hasta
+         AND (@IdArea IS NULL OR i.IdArea = @IdArea)
+       GROUP BY c.Nombre, a.Nombre
+       ORDER BY Total DESC, a.Nombre, c.Nombre;
+
+      SELECT i.Folio, i.FechaCreacion, a.Nombre AS Area, c.Nombre AS Categoria, i.Titulo,
+             e.Nombre AS Estatus, i.Prioridad, ua.Nombre + ISNULL(' ' + ua.Apellidos, '') AS Asignado
+        FROM Incidencias i
+        JOIN Areas a ON a.IdArea = i.IdArea
+        JOIN Categorias c ON c.IdCategoria = i.IdCategoria
+        JOIN Estatus e ON e.IdEstatus = i.IdEstatus
+        LEFT JOIN Usuarios ua ON ua.IdUsuario = i.IdAsignado
+       WHERE CAST(i.FechaCreacion AS DATE) BETWEEN @Desde AND @Hasta
+         AND (@IdArea IS NULL OR i.IdArea = @IdArea)
+       ORDER BY i.FechaCreacion;
+
+      SELECT Nombre + ISNULL(' ' + Apellidos, '') AS Nombre FROM Usuarios WHERE IdUsuario = @IdUsuario;`);
+  const [porCategoria, incidencias, [autor]] = r.recordsets;
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="reporte-incidencias_${desde}_${hasta}.pdf"`);
+  generarReportePdf(res, {
+    desde,
+    hasta,
+    area: idArea ? porArea[0]?.Nombre || 'Área seleccionada' : 'Todas las áreas',
+    generadoPor: autor?.Nombre || req.usuario.nombre,
+    totales,
+    porArea,
+    porEstatus,
+    porCategoria,
+    incidencias,
+  });
+}
+
+module.exports = { resumen, exportarCsv, exportarPdf };

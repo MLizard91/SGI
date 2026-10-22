@@ -27,7 +27,11 @@ export default function Login() {
   return (
     <div className="login">
       <form className="tarjeta login-form" onSubmit={enviar}>
-        <span className="logo grande">SGI</span>
+        <img
+          className="logo-imagen"
+          src="/logo-mexticacan.png"
+          alt="Mexticacán Incidencias: tu reporte, un mejor municipio"
+        />
         <h1>Sistema de Gestión de Incidencias</h1>
         <p className="sub">H. Ayuntamiento de Mexticacán, Jalisco</p>
         <label>

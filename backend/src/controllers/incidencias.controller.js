@@ -14,7 +14,7 @@ const SELECT_INCIDENCIA = `
          i.IdCategoria, c.Nombre AS Categoria,
          i.IdArea, a.Nombre AS Area, a.Color AS ColorArea,
          i.IdEstatus, e.Nombre AS Estatus, e.Color AS ColorEstatus,
-         i.IdCiudadano, uc.Nombre + ISNULL(' ' + uc.Apellidos, '') AS Ciudadano, uc.Telefono AS TelefonoCiudadano,
+         i.IdCiudadano, uc.Nombre + ISNULL(' ' + uc.Apellidos, '') AS Ciudadano,
          i.IdAsignado, ua.Nombre + ISNULL(' ' + ua.Apellidos, '') AS Asignado,
          (SELECT TOP 1 Ruta FROM IncidenciaImagenes im
            WHERE im.IdIncidencia = i.IdIncidencia AND im.Tipo = 'Reporte' ORDER BY im.IdImagen) AS ImagenPrincipal
@@ -155,7 +155,6 @@ async function detalle(req, res) {
      ORDER BY h.Fecha, h.IdHistorial;`);
 
   const [imagenes, comentarios, historial] = r.recordsets;
-  if (esCiudadano) delete incidencia.TelefonoCiudadano;
   res.json({ ...incidencia, imagenes, comentarios, historial });
 }
 

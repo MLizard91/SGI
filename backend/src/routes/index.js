@@ -44,6 +44,7 @@ router.put('/usuarios/:id', verificarToken, permitirRoles(ADMIN), usuarios.actua
 // --- Reportes y estadísticas ---
 router.get('/reportes/resumen', verificarToken, permitirRoles(...PERSONAL), reportes.resumen);
 router.get('/reportes/exportar', verificarToken, permitirRoles(ADMIN, ENCARGADO, RECEPCION), reportes.exportarCsv);
+router.get('/reportes/pdf', verificarToken, permitirRoles(...GESTION), reportes.exportarPdf);
 
 // --- Notificaciones ---
 router.get('/notificaciones', verificarToken, notificaciones.listar);
