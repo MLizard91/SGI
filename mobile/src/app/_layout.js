@@ -23,6 +23,8 @@ export default function RootLayout() {
           <Stack.Screen name="reportes/index" options={{ title: 'Mis reportes' }} />
           <Stack.Screen name="reportes/nuevo" options={{ title: 'Nuevo reporte' }} />
           <Stack.Screen name="reportes/[id]" options={{ title: 'Detalle del reporte' }} />
+          <Stack.Screen name="panel" options={{ headerShown: false }} />
+          <Stack.Screen name="gestion/[id]" options={{ title: 'Incidencia' }} />
         </Stack>
       </SocketProvider>
     </AuthProvider>

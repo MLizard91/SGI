@@ -39,7 +39,8 @@
           "photosPermission": "SGI accede a tus fotos para adjuntarlas al reporte.",
           "microphonePermission": false
         }
-      ]
+      ],
+      "expo-sharing"
     ]
   }
 }

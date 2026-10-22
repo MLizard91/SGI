@@ -1,5 +1,7 @@
 // Cliente para consumir la API REST desde la app móvil.
 import * as SecureStore from 'expo-secure-store';
+import { File, Paths } from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import { API_URL } from './config';
 
 const LLAVE_TOKEN = 'sgi_token';
@@ -59,6 +61,37 @@ export async function api(ruta, { method = 'GET', body, formData } = {}) {
   const datos = await res.json().catch(() => ({}));
   if (!res.ok) throw respuestaConError(res.status, datos);
   return datos;
+}
+
+// Descarga un archivo protegido (p. ej. el reporte PDF) y abre el menú para compartirlo o guardarlo.
+export async function descargarYCompartir(ruta, nombre, { mimeType = 'application/pdf', UTI = 'com.adobe.pdf' } = {}) {
+  const token = await leerToken();
+  const destino = new File(Paths.cache, nombre);
+  if (destino.exists) destino.delete();
+
+  let archivo;
+  try {
+    archivo = await File.createDownloadTask(`${API_URL}/api${ruta}`, destino, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).downloadAsync();
+  } catch {
+    throw new Error(SIN_CONEXION);
+  }
+  if (!archivo) throw new Error('La descarga se interrumpió');
+
+  // Si el servidor respondió con un error, lo descargado es un JSON con el mensaje
+  if (archivo.size < 2000) {
+    const texto = await archivo.text();
+    if (texto.trim().startsWith('{')) {
+      archivo.delete();
+      let mensaje = 'No se pudo generar el archivo';
+      try { mensaje = JSON.parse(texto).mensaje || mensaje; } catch { /* sin JSON */ }
+      throw new Error(mensaje);
+    }
+  }
+
+  if (!(await Sharing.isAvailableAsync())) throw new Error('Este dispositivo no permite compartir archivos');
+  await Sharing.shareAsync(archivo.uri, { mimeType, UTI, dialogTitle: nombre });
 }
 
 export function formatoFecha(valor) {

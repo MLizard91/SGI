@@ -27,7 +27,7 @@ export default function Login() {
     setCargando(true);
     try {
       await iniciarSesion(correo.trim(), password);
-      router.replace('/reportes');
+      router.replace('/');
     } catch (e) {
       Alert.alert('No se pudo iniciar sesión', e.message);
     } finally {

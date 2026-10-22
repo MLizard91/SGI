@@ -7,10 +7,13 @@ import { api } from '../../api';
 import { Boton, Campo, Chip, Tarjeta, Titulo } from '../../components/UI';
 import MapaOSM from '../../components/MapaOSM';
 import { COLORES } from '../../config';
+import { useAuth } from '../../context/AuthContext';
+import { esPersonal } from '../../roles';
 
 const MAX_FOTOS = 5;
 
 export default function NuevoReporte() {
+  const { usuario } = useAuth();
   const [catalogos, setCatalogos] = useState(null);
   const [idArea, setIdArea] = useState(null);
   const [idCategoria, setIdCategoria] = useState(null);
@@ -131,8 +134,13 @@ export default function NuevoReporte() {
     setEnviando(true);
     try {
       const inc = await api('/incidencias', { method: 'POST', formData: fd });
-      Alert.alert('¡Reporte enviado!', `Tu folio es ${inc.Folio}. Te avisaremos cuando cambie de estatus.`);
-      router.replace(`/reportes/${inc.IdIncidencia}`);
+      if (esPersonal(usuario)) {
+        Alert.alert('Reporte registrado', `Folio ${inc.Folio}. Ya puedes asignarlo y darle seguimiento.`);
+        router.replace(`/gestion/${inc.IdIncidencia}`);
+      } else {
+        Alert.alert('¡Reporte enviado!', `Tu folio es ${inc.Folio}. Te avisaremos cuando cambie de estatus.`);
+        router.replace(`/reportes/${inc.IdIncidencia}`);
+      }
     } catch (e) {
       Alert.alert('No se pudo enviar', e.message);
     } finally {

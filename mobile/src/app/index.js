@@ -2,8 +2,9 @@ import { Redirect } from 'expo-router';
 import { ActivityIndicator, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { COLORES } from '../config';
+import { esPersonal } from '../roles';
 
-// Pantalla inicial: decide si mostrar el login o los reportes
+// Pantalla inicial: login, panel de gestión (personal municipal) o mis reportes (ciudadano)
 export default function Inicio() {
   const { usuario, cargando } = useAuth();
   if (cargando) {
@@ -13,5 +14,6 @@ export default function Inicio() {
       </View>
     );
   }
-  return <Redirect href={usuario ? '/reportes' : '/login'} />;
+  if (!usuario) return <Redirect href="/login" />;
+  return <Redirect href={esPersonal(usuario) ? '/panel' : '/reportes'} />;
 }

@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useSocketEvent } from '../../context/SocketContext';
 import { EstatusBadge } from '../../components/UI';
 import { COLORES } from '../../config';
+import { esPersonal } from '../../roles';
 
 export default function MisReportes() {
   const { usuario, cerrarSesion } = useAuth();
@@ -40,6 +41,7 @@ export default function MisReportes() {
   );
 
   if (!usuario) return <Redirect href="/login" />;
+  if (esPersonal(usuario)) return <Redirect href="/panel" />;
 
   return (
     <View style={{ flex: 1 }}>
