@@ -1,7 +1,7 @@
 // Mapa de incidencias del municipio, actualizado en tiempo real.
 import { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { api } from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { useSocketEvent } from '../../context/SocketContext';
@@ -12,6 +12,7 @@ import { eligeArea } from '../../roles';
 import { COLORES } from '../../config';
 
 export default function Mapa() {
+  const router = useRouter();
   const { usuario } = useAuth();
   const catalogos = useCatalogos();
   const [puntos, setPuntos] = useState([]);

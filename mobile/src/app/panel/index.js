@@ -1,7 +1,7 @@
 // Dashboard del personal: indicadores, gráficas, reporte PDF y reportes recientes.
 import { useCallback, useState } from 'react';
 import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { router, useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { api, formatoFecha } from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { useSocketEvent } from '../../context/SocketContext';
@@ -11,6 +11,7 @@ import { ROLES } from '../../roles';
 import { COLORES } from '../../config';
 
 export default function Dashboard() {
+  const router = useRouter();
   const { usuario } = useAuth();
   const [resumen, setResumen] = useState(null);
   const [recientes, setRecientes] = useState([]);

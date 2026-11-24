@@ -1,7 +1,7 @@
 // Lista de incidencias con búsqueda, filtros y carga por páginas (equivalente a la tabla del panel web).
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { api, formatoFecha, imagenUrl } from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { useSocketEvent } from '../../context/SocketContext';
@@ -14,6 +14,7 @@ const LIMITE = 15;
 const SIN_FILTROS = { area: '', estatus: '', prioridad: '', abiertas: false };
 
 export default function Incidencias() {
+  const router = useRouter();
   const { usuario } = useAuth();
   const catalogos = useCatalogos();
   const [buscar, setBuscar] = useState('');

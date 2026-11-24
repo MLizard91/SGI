@@ -1,11 +1,12 @@
 // Notificaciones del personal (nuevos reportes, asignaciones, comentarios de ciudadanos).
 import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { formatoFecha } from '../../api';
 import { useNotificaciones } from '../../context/NotificacionesContext';
 import { COLORES } from '../../config';
 
 export default function Avisos() {
+  const router = useRouter();
   const { datos, noLeidas, cargando, cargar, marcarLeida, leerTodas } = useNotificaciones();
 
   async function abrir(n) {

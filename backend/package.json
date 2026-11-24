@@ -7,7 +7,7 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "crear-admin": "node scripts/crear-admin.js",
-    "test": "node --test --test-reporter=spec tests/"
+    "test": "node --test --test-reporter=spec \"tests/**/*.test.js\""
   },
   "license": "MIT",
   "dependencies": {

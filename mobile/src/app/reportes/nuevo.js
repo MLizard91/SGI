@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { api } from '../../api';
@@ -13,6 +13,7 @@ import { esPersonal } from '../../roles';
 const MAX_FOTOS = 5;
 
 export default function NuevoReporte() {
+  const router = useRouter();
   const { usuario } = useAuth();
   const [catalogos, setCatalogos] = useState(null);
   const [idArea, setIdArea] = useState(null);

@@ -22,6 +22,7 @@ function Pestanas() {
     <Tabs
       screenOptions={{
         headerStyle: { backgroundColor: COLORES.guinda },
+        headerTransparent: false,
         headerTintColor: '#fff',
         headerTitleStyle: { fontWeight: '700' },
         headerRight: () => (

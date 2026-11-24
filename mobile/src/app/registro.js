@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
 import { Boton, Campo } from '../components/UI';
 import { COLORES } from '../config';
 
 export default function Registro() {
+  const router = useRouter();
   const { registrarse } = useAuth();
   const [form, setForm] = useState({ nombre: '', apellidos: '', telefono: '', correo: '', password: '', confirmar: '' });
   const [cargando, setCargando] = useState(false);

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
-import { Redirect, Stack, router, useFocusEffect } from 'expo-router';
+import { Redirect, Stack, useFocusEffect, useRouter } from 'expo-router';
 import { api, formatoFecha, imagenUrl } from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { useSocketEvent } from '../../context/SocketContext';
@@ -9,6 +9,7 @@ import { COLORES } from '../../config';
 import { esPersonal } from '../../roles';
 
 export default function MisReportes() {
+  const router = useRouter();
   const { usuario, cerrarSesion } = useAuth();
   const [reportes, setReportes] = useState([]);
   const [cargando, setCargando] = useState(false);

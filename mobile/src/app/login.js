@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Link, router } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Boton, Campo } from '../components/UI';
 import { COLORES } from '../config';
 
 export default function Login() {
+  const router = useRouter();
   const { iniciarSesion } = useAuth();
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');

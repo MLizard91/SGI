@@ -1,6 +1,6 @@
 // URL del backend. Se toma de la variable EXPO_PUBLIC_API_URL (archivo .env).
 // Importante: en el teléfono "localhost" es el propio teléfono, usa la IP de tu PC.
-export const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.50:4000';
+export const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.100.5:4000';
 
 // Centro aproximado de la cabecera municipal de Mexticacán, Jalisco
 export const CENTRO_MEXTICACAN = { latitude: 21.2667, longitude: -102.7833 };
